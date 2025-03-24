@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Create Account - Nittany Business</title>
+    <style>
+    .button {
+        color: gray;
+	    text-align: center;
+        border: none;
+	    display: inline-block;
+    }
+    </style> <!-- Changing button style-->
+</head>
+<body>
+<div class="container-sm">
+
+<!-- Add Logic -->
+    <div class="card-body">
+        <h1 align="center">Welcome to Nittany Business!</h1><!-- Main heading -->
+        <h2 class="card-title">Create Account</h2>
+
+        <form id="addForm" action="/CreateAccount" method="POST"> <!-- Form ID addForm called later by modal -->
+            <div class="form-group">
+                <label for="Email">Email Address</label>
+                <input type="text" name="Email" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="Password">Password</label>
+                <input type="password" name="Password" required class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" name="confirmPassword" required class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">CREATE ACCOUNT</button>
+            <a class="btn btn-success" href="/Login" role="button">BACK TO LOG IN</a> <!-- Routes to home page -->
+        </form>
+    </div>
+</div>
+<!-- End Add Logic -->
+
+<!-- Modals -->
+<div class="modal fade" id="passNotMatchModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create Account Failed</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Both password fields must be identical. Please try again.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="incorrectIDModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create Account Failed</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Incorrect email address formatting detected. Please re-enter a valid email address.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="acctExistsModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create Account Failed</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Account already exists. Please log in.</p>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-success" href="/Login" role="button">Visit Login Page</a> <!-- Routes to home page -->
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- End Modals -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+      {% if passwordsNotMatch %}
+        $('#passNotMatchModal').modal('show');
+      {% endif %}
+    });
+</script>
+<script>
+    $(document).ready(function(){
+      {% if incorrectID %}
+        $('#incorrectIDModal').modal('show');
+      {% endif %}
+    });
+</script>
+<script>
+    $(document).ready(function(){
+      {% if acctExist %}
+        $('#acctExistsModal').modal('show');
+      {% endif %}
+    });
+</script>
+</body>
+</html>
