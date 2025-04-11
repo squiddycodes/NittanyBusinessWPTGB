@@ -4,6 +4,10 @@ import pandas as pd
 import sqlite3 as sql
 import hashlib
 
+# importing blueprints from other files
+from reviews import reviews_bp
+from registration import registration_bp
+
 from werkzeug.serving import connection_dropped_errors
 
 # Derek Guidorizzi, Joe Long, Nicole Chen, Bhavishya Malla
@@ -265,6 +269,9 @@ def create_app():
 
 app = create_app()
 
+app.register_blueprint(reviews_bp)
+app.register_blueprint(registration_bp)
+
 @app.route('/')
 def index():
     return render_template('index.html', loginFailed=False)
@@ -282,32 +289,6 @@ def name():
             return render_template("index.html", loginFailed=True)
     else:
         return render_template("index.html", loginFailed=False)
-
-@app.route('/CreateAccount', methods=['POST', 'GET']) #PRESS LOG IN
-def input():
-    if request.method == 'POST':
-        if request.form['Password'] != request.form['confirmPassword']:
-            return render_template('input.html', incorrectID = False, passwordsNotMatch=True, acctExist=False)
-        else:#passwords match
-            potentailUserID = request.form['Email']
-
-            if "@" not in potentailUserID:
-                print("Invalid User ID")
-                return render_template('input.html', incorrectID=True, passwordsNotMatch=False, acctExist=False)
-
-            hashedPw = hash(request.form['Password'])
-            connection = sql.connect('database.db')
-            email = request.form['Email']
-            matches = connection.execute('SELECT COUNT(*) as rows FROM Users WHERE email = ?',(email,))  # get all users with email
-            result = matches.fetchone()
-            if result is not None and result[0] is not None and int(result[0]) > 0:
-                return render_template('input.html', incorrectID = False, passwordsNotMatch=False, acctExist=True)
-            else: #new entry
-                connection.execute('INSERT INTO Users (email, password) VALUES (?,?);', (request.form["Email"], hashedPw))
-                connection.commit()
-                return render_template('landingPage.html', email=request.form['Email'])#go to landing page
-
-    return render_template('input.html')
 
 
 def valid_login(email, password):#returns user if there is one that matches hashed input
