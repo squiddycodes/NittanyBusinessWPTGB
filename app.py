@@ -7,6 +7,7 @@ import hashlib
 # importing blueprints from other files
 from reviews import reviews_bp
 from registration import registration_bp
+from products import products_bp
 
 from werkzeug.serving import connection_dropped_errors
 
