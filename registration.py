@@ -1,16 +1,20 @@
 from flask import Flask, Blueprint, render_template, request
 import sqlite3 as sql
-from app import hash
-from app import create_app
+import hashlib
+#from app import create_app
 
-app = create_app()
+#app = create_app()
 registration_bp = Blueprint('registration', __name__, template_folder='templates')
 # create account option on input page already--move the page that create account button
 # redirects to onto this file :)
 @registration_bp.route("/registration")
 
-@app.route('/CreateAccount', methods=['POST', 'GET']) #PRESS LOG IN
+def hash(input):
+    return hashlib.sha256(input.encode('utf-8')).hexdigest()
+
+@registration_bp.route('/CreateAccount', methods=['POST', 'GET']) #PRESS LOG IN
 def input():
+    print("hello world")
     if request.method == 'POST':
         if request.form['Password'] != request.form['confirmPassword']:
             return render_template('input.html', incorrectID = False, passwordsNotMatch=True, acctExist=False)
