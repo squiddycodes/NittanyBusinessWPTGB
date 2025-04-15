@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Home - Nittany Business</title>
+    <style>
+    .btn {
+        color: white;
+	text-align: center;
+        border: none;
+	display: inline-block;
+        margin: 4px 2px;
+    }
+
+    div {
+        padding: 20px;
+        border: 10px solid gray;
+        margin: 0;
+    }
+
+    body {
+        color:#444;line-height:1.6
+    }
+    </style><!-- Changing button style-->
+</head>
+<body>
+
+<div align="center" class="container-sm">
+    <h1 align="center">Nittany Business - Home</h1><!-- Main heading -->
+    <h5>Welcome, {{ email }}</h5>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+
+    <h2 class="card-title">HelpDesk Suite</h2>
+
+    <form action="/ReviewRequests" method="POST">
+        <button type="submit" class="btn btn-primary">Review Requests</button>
+    </form>
+
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+
+    <a class="btn btn-success" href="/Login" role="button">Log Out</a>
+</div>
+
+</body>
+</html>
