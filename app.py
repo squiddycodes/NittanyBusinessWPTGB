@@ -282,10 +282,21 @@ def index():
 def name():
     error = None
     if request.method == 'POST':
+        #if
         hashedPw = hash(request.form['Password'])
-        result = valid_login(request.form['Email'], hashedPw)
-        if result:
-            return render_template('landingPage.html', email=request.form['Email'])#go to landing page
+        userExists = valid_login(request.form['Email'], hashedPw)
+        if userExists:
+            userType = getUserType(request.form['Email'])
+            if userType == 'B':
+                return render_template('buyersLandingPage.html', email=request.form['Email'])  # go to landing page
+            elif userType == 'S':
+                return render_template('sellersLandingPage.html', email=request.form['Email'])  # go to landing page
+            elif userType == 'H':
+                return render_template('helpdeskLandingPage.html', email=request.form['Email'])  # go to landing page
+            else:
+                print("User is not in a buyer, seller, or helpdesk table, or is in multiple")
+                return render_template("index.html", loginFailed=True)
+            #return render_template('landingPage.html', email=request.form['Email'])#go to landing page
         else:
             return render_template("index.html", loginFailed=True)
     else:
@@ -296,6 +307,24 @@ def valid_login(email, password):#returns user if there is one that matches hash
     connection = sql.connect('database.db')
     matches = connection.execute('SELECT * FROM Users WHERE email = ? AND password = ?', (email, password)) #get all users with user-pw combo
     return matches.fetchone()
+
+def getUserType(email):#returns user type, 'B', 'S', 'H' - if no user, returns ''
+    result = ''
+    connection = sql.connect('database.db')
+    buyer = connection.execute('SELECT * FROM Buyers WHERE email = ?',(email,))
+    seller = connection.execute('SELECT * FROM Sellers WHERE email = ?', (email,))
+    helpdesk = connection.execute('SELECT * FROM HelpDesk WHERE email = ?', (email,))
+    if buyer.fetchone():
+        result += 'B'
+    if seller.fetchone():
+        result += 'S'
+    if helpdesk.fetchone():
+        result += 'H'
+    return result
+
+
+
+
 
 if __name__ == "__main__":
     createDB()
