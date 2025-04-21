@@ -273,6 +273,8 @@ app = create_app()
 app.register_blueprint(reviews_bp)
 app.register_blueprint(registration_bp)
 
+app.register_blueprint(products_bp)
+
 @app.route('/')
 def index():
     return render_template('index.html', loginFailed=False)
