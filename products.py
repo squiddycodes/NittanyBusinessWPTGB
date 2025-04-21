@@ -13,6 +13,7 @@ def loadSellerProducts():
     cursor.execute('SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Seller_Email = ?', (email,))
     products = cursor.fetchall()
     connection.close()
+    #Fills table with seller's products
 
     return render_template('sellerproducts.html', email=email, productfile = products)
 
