@@ -19,6 +19,12 @@
 <div>
     <h1 align = center>Welcome {{ email }} - View Your Products Here</h1>
 </div>
+<div>
+    <form action="/HomePage" method="POST">
+        <input type = "hidden" name = "email" value = "{{ email }}">
+        <button type="submit" class="btn btn-primary">Return to HomePage</button>
+    </form>
+</div>
 
 <div class = "card-body">
     <h2 class = "card-title">Products</h2>

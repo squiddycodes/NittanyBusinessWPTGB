@@ -36,9 +36,11 @@
     <h2 class="card-title">Seller Suite</h2>
 
     <form action="/MyProducts" method="POST">
+        <input type = "hidden" name = "email" value = "{{ email }}">
         <button type="submit" class="btn btn-primary">My Products</button>
     </form>
     <form action="/ProductRegistration" method="POST">
+        <input type = "hidden" name = "email" value = "{{ email }}">
         <button type="submit" class="btn btn-primary">Register A Product</button>
     </form>
 
