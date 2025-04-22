@@ -5,7 +5,12 @@
     <title>Home - Nittany Business</title>
 </head>
 <body>
-<h1>Login successful - Welcome {{ email }}</h1>
-<a class="btn btn-success" href="/Login" role="button">Go Back</a>
+    <h1>Login successful - Welcome {{ email }}</h1>
+
+    <p>What would you like to do next?</p>
+    <ul>
+        <li><a href="/placeorder">Place an Order</a></li>
+        <li><a href="/user">Update Profile</a></li>
+    </ul>
 </body>
 </html>
