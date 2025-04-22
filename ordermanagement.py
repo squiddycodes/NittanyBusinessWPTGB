@@ -5,7 +5,7 @@ from datetime import datetime
 order_bp = Blueprint("order", __name__)
 
 def get_db():
-    return sqlite3.connect("nittanybusiness.db")
+    return sql.connect('database.db')
 
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
