@@ -16,8 +16,9 @@
     </style><!-- Changing button style-->
 </head>
 <body>
+<div align="center" class="container-sm">
 <div>
-    <h1 align = center>Welcome {{ email }} - View Our Sold Products Here</h1>
+    <h1 align = center>Product Catalogue</h1>
 </div>
 <div>
     <form action="/BuyersHomePage" method="POST">
@@ -42,7 +43,9 @@
   <tbody>
     {% for Product_Title, Listing_ID, Category, Quantity, Status in productfile %}
     <tr>
-      <td>{{ Product_Title }}</td>
+      <td>
+        <a href="/BrowseProducts/{{ Listing_ID }}">{{ Product_Title }}</a>
+      </td>
       <td>{{ Listing_ID }}</td>
       <td>{{ Category }}</td>
       <td>{{ Quantity }}</td>
@@ -53,6 +56,6 @@
 </table>
 
 </div>
-
+</div>
 </body>
 </html>
