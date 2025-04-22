@@ -14,29 +14,37 @@ def hash(input):
     return hashlib.sha256(input.encode('utf-8')).hexdigest()
 
 # Find if the address that the user inputs during creation is linked to an address ID
-def getAddress(streetnum, streetname, zipcode):
+def getAddress(zipcode, streetnum, streetname):
     address_path = os.path.join('NittanyBusinessDataset_v3', 'Address.csv')
     address_data = pd.read_csv(address_path)
 
-    for _, row in address_data.iterrows():
-        dfStreetNum = row['street_number']
-        dfStreetName = row['street_name'].strip().lower()   # in case of extra spaces/inputting lowercase address
-        dfZipcode = str(row['zipcode'])
+    if not all(col in address_data.columns for col in ["zipcode", "street_num", "street_name"]):
+        print("Something is wrong")
+        return None
 
-        if dfStreetNum == streetnum and dfStreetName == streetname.strip().lower() and dfZipcode == zipcode:
-            return row['address_id']
 
-    return None
+
+    fullAddr = address_data[
+        # Input type in html form is text, convert database info to string
+        (address_data["zipcode"].astype(str) == zipcode) &
+        (address_data["street_num"].astype(str) == streetnum) &
+        (address_data["street_name"].astype(str) == streetname)
+    ]
+
+    if fullAddr.empty:
+        return None
+
+    return fullAddr.iloc[0]["address_id"]
 
 @registration_bp.route('/CreateAccount', methods=['POST', 'GET']) #PRESS CREATE ACCOUNT
 def input():
+    print("TESTING FOR NOW")  # Form not being submitted/attempted to submit at all
     email = request.form.get('Email')
     password = request.form.get('Password')
     confirm_pwd = request.form.get('confirmPassword')
     account_type = request.form.get('accountType')
 
     if request.method == 'POST':
-        print("TESTING FOR NOW")    # Form not being submitted/attempted to submit at all
         if password != confirm_pwd:
             return render_template('input.html', incorrectID = False, passwordsNotMatch=True, acctExist=False)
 
@@ -59,7 +67,7 @@ def input():
                 street_name = request.form.get('buyerStName')
                 zip_code = request.form.get('buyerZip')
 
-                address_id = getAddress(street_num, street_name, zip_code)
+                address_id = getAddress(zip_code, street_num, street_name)
                 if address_id is None:
                     print("Invalid address information")
                     connection.rollback()
@@ -77,7 +85,7 @@ def input():
                 routing_num = request.form.get('sellerRoutNum')
                 account_num = request.form.get('sellerAccNum')
 
-                address_id = getAddress(street_num, street_name, zip_code)
+                address_id = getAddress(zip_code, street_num, street_name)
                 if address_id is None:
                     print("Invalid address information")
                     connection.rollback()

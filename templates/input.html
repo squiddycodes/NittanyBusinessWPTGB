@@ -47,7 +47,7 @@
                 </select>
             </div>
 
-            <div id="buyerFields" class="form-group" hidden>
+            <div id="buyerFields" class="form-group" >
                 <h3>Buyer Information</h3>
                 <label for="buyerBusiness">Business Name</label>
                 <input type="text" id="buyerBusiness" name="buyerBusiness" required class="form-control"> <br />
@@ -68,10 +68,10 @@
                 <input type="text" id="sellerStName" name="sellerStName" required class="form-control">
                 <label for="sellerZip">Zip Code</label>
                 <input type="text" id="sellerZip" name="sellerZip" required class="form-control"> <br />
-                <label for="sellerRoutNum">Bank Routing Number</label>
-                <input type="text" pattern="\d{8}" maxlength="8" id="sellerRoutNum" name="routingNum" required class="form-control"> <br />
+                <label for="sellerRoutNum">Bank Routing Number (xxxx-xxxx-x)</label>
+                <input type="text" pattern="[0-9]{4}-[0-9]{4}-[0-9]{1}" id="sellerRoutNum" name="routingNum" required class="form-control"> <br />  <!-- Regex to control input format -->
                 <label for="sellerAccNum">Bank Account Number</label>
-                <input type="text" pattern="\d{6}" maxlength="6" id="sellerAccNum" name="accountNum" required class="form-control"> <br />
+                <input type="text" pattern="\d{8}" maxlength="8" id="sellerAccNum" name="accountNum" required class="form-control"> <br />
             </div>
             <div id="helpdeskFields" class="form-group" hidden>
                 <h3>HelpDesk Information</h3>
