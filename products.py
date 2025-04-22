@@ -25,3 +25,16 @@ def loadProductRegistrar():
 def returntoHomePage():
     email = request.form['email']
     return render_template('sellersLandingPage.html', email = email)
+
+@products_bp.route("/MyProducts/EditProduct<int:listing_id>")
+def edit_product(listing_id):
+    email = request.form['email']
+    print(listing_id)
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Listing_ID = ? AND Seller_Email = ?', (listing_id,email))
+    product = cursor.fetchone()
+    connection.close()
+    print("product", product)
+    return render_template("editproduct.html", product=product)
