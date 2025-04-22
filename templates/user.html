@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Profile</title>
+</head>
+<body>
+    <h2>Update Profile</h2>
+    <form id="profileForm">
+        <label for="password">New Password:</label>
+        <input type="password" id="password"><br><br>
+
+        <label for="business_name">Business Name:</label>
+        <input type="text" id="business_name"><br><br>
+
+        <h4>Address</h4>
+        <label for="zipcode">Zipcode:</label>
+        <input type="text" id="zipcode"><br>
+
+        <label for="street_num">Street Number:</label>
+        <input type="text" id="street_num"><br>
+
+        <label for="street_name">Street Name:</label>
+        <input type="text" id="street_name"><br><br>
+
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <p id="updateMessage"></p>
+
+    <script>
+        document.getElementById("profileForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const response = await fetch("/update_profile", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    password: document.getElementById("password").value,
+                    business_name: document.getElementById("business_name").value,
+                    address: {
+                        zipcode: document.getElementById("zipcode").value,
+                        street_num: document.getElementById("street_num").value,
+                        street_name: document.getElementById("street_name").value
+                    }
+                })
+            });
+
+            const result = await response.json();
+            document.getElementById("updateMessage").innerText = result.message || result.error;
+        });
+    </script>
+</body>
+</html>
