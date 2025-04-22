@@ -21,7 +21,7 @@ def loadSellerProducts():
 def loadProductRegistrar():
     return render_template('productregisterform.html')
 
-@products_bp.route('/HomePage', methods=['POST', 'GET'])
+@products_bp.route('/SellerHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
     email = request.form['email']
     return render_template('sellersLandingPage.html', email = email)

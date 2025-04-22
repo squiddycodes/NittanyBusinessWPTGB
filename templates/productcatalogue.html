@@ -17,10 +17,10 @@
 </head>
 <body>
 <div>
-    <h1 align = center>Welcome {{ email }} - View Your Products Here</h1>
+    <h1 align = center>Welcome {{ email }} - View Our Sold Products Here</h1>
 </div>
 <div>
-    <form action="/SellerHomePage" method="POST">
+    <form action="/BuyersHomePage" method="POST">
         <!-- Sends users back to their respective homepage -->
         <input type = "hidden" name = "email" value = "{{ email }}">
         <button type="submit" class="btn btn-primary">Return to HomePage</button>

@@ -36,6 +36,7 @@
     <h2 class="card-title">Buyer Suite</h2>
 
     <form action="/BrowseProducts" method="POST">
+        <input type = "hidden" name = "email" value = "{{ email }}"><!--Added hidden forms to move email around-->
         <button type="submit" class="btn btn-primary">Browse Products</button>
     </form>
 
