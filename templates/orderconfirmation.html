@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation - Nittany Business</title>
+</head>
+<body>
+    <h1>Order Confirmed!</h1>
+    <p>Thank you for your purchase!</p>
+    
+    <p><strong>Order Summary:</strong></p>
+    <ul>
+        <li><strong>Product Name:</strong> {{ product_name }}</li>
+        <li><strong>Seller:</strong> {{ seller_name }} ({{ seller_email }})</li>
+        <li><strong>Quantity:</strong> {{ quantity }}</li>
+        <li><strong>Unit Price:</strong> ${{ unit_price }}</li>
+        <li><strong>Total Price:</strong> ${{ total_price }}</li>
+        <li><strong>Order ID:</strong> {{ order_id }}</li>
+    </ul>
+    
+    <p>Your order will be processed soon. You will receive an email confirmation with tracking details once your order ships.</p>
+
+    <a href="/browse">Continue Shopping</a> | 
+    <a href="/order_history">View Your Orders</a>
+</body>
+</html>
