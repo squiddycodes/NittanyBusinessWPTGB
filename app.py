@@ -7,6 +7,7 @@ import hashlib
 # importing blueprints from other files
 from reviews import reviews_bp
 from registration import registration_bp
+from BrowseProducts import browseproducts_bp
 from products import products_bp
 
 from werkzeug.serving import connection_dropped_errors
@@ -272,9 +273,8 @@ app = create_app()
 
 app.register_blueprint(reviews_bp)
 app.register_blueprint(registration_bp)
-
+app.register_blueprint(browseproducts_bp)
 app.register_blueprint(products_bp)
-
 @app.route('/')
 def index():
     return render_template('index.html', loginFailed=False)
