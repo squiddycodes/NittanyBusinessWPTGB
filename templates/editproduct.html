@@ -16,6 +16,11 @@
     </style><!-- Changing button style-->
 </head>
 <body>
+
+<form method="POST" action="{{ url_for('products.update_product') }}">
+  <!-- carry the ID forward: -->
+  <input type="hidden" name="listing_id" value="{{ listing_id }}">
+</form>
 <div align="center" class="container-sm">
     <div>
         <h1 align = center>Edit Product</h1>
@@ -25,22 +30,71 @@
 <div class="container-sm">
     <div>
         <h2 align = left>Original Product Details:</h2>
+
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for="newProdName">Original Product Title: {{ product[0] }}</label>
+          </div>
+          <div class="col text-right">
+            <label for="newProdName">Original Product Name: {{ product[1] }}</label>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for = newProdName>Original Product Description: {{ product[2] }}</label>
+          </div>
+          <div class="col text-right">
+            <label for = newProdName>Original Product Category: {{ product[3] }}</label>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for = newProdName>Original Product Quantity: {{ product[4] }}</label>
+          </div>
+          <div class="col text-right">
+            <label for = newProdName>Original Product Price: {{ product[5] }}</label>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for = newProdName>Original Product Status: {{ product[6] }}</label>
+          </div>
+        </div>
     </div>
 
     <!-- Original Product Details here -->
     <form id="addForm" action="/UpdateProduct" method="POST">
         <div>
+            <label for = newProdTitle>New Product Title:</label>
+            <input type="text" id="newProdTitle" name="New Product Title" required class="form-control">
+        </div>
+        <div>
             <label for = newProdName>New Product Name:</label>
             <input type="text" id="newProdName" name="New Product Name" required class="form-control">
         </div>
         <div>
-            <label for = newProdQty>New Product Quantity:</label>
-            <input type="text" id="newProdQty" name="New Product Quantity" required class="form-control">
+            <label for = newProdDescription>New Product Description:</label>
+            <input type="text" id="newProdDescription" name="New Product Description" required class="form-control">
+        </div>
+        <div>
+            <label for = newProdCategory>New Product Category:</label>
+            <input type="text" id="newProdCategory" name="New Product Category" required class="form-control">
+        </div>
+        <div>
+            <label for = newProdQuantity>New Product Quantity:</label>
+            <input type="text" id="newProdQuantity" name="New Product Quantity" required class="form-control">
+        </div>
+        <div>
+            <label for = newProdPrice>New Product Price:</label>
+            <input type="text" id="newProdPrice" name="New Product Price" required class="form-control">
         </div>
         <div>
             <label for = newProdStatus>New Product Status:</label>
             <input type="text" id="newProdStatus" name="New Product Status" required class="form-control">
         </div>
+
+        <button type="submit" class="btn btn-primary">Submit Changes</button>
+        <a class="btn btn-success" href="/MyProducts" role="button">My Products</a> <!-- Routes to home page -->
     </form>
 </div>
 </body>

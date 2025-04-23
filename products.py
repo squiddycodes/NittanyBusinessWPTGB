@@ -26,7 +26,7 @@ def returntoHomePage():
     email = request.form['email']
     return render_template('sellersLandingPage.html', email = email)
 
-@products_bp.route("/MyProducts/EditProduct<int:listing_id>")
+@products_bp.route("/MyProducts/EditProduct/<int:listing_id>", methods=['POST', 'GET'])
 def edit_product(listing_id):
     print("Hello World")
     #email = request.form['email']
@@ -34,20 +34,28 @@ def edit_product(listing_id):
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
+        'SELECT Product_Title, '
+        'Product_Name, '
+        'Product_Description, '
+        'Category, '
+        'Quantity, '
+        'Product_Price, '
+        'Status FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
     product = cursor.fetchone()
     connection.close()
     print("product", product)
-    return render_template("editproduct.html", product=product)
+    return render_template("editproduct.html", product=product, listing_id=listing_id)
 
 @products_bp.route("/UpdateProduct", methods = ['POST', 'GET'])
 def update_product():
+    listing_id = request.form['listing_id']
+    print("listing_id to be updated: ", listing_id)
     connection = sql.connect('database.db')
     cursor = connection.cursor()
 
     cursor.execute(
         'UPDATE Product_Listings SET Product_Title = newProdName,'
         'Quantity = newProdQty, '
-        'Status = newProdStatus WHERE Listing_ID = ?', (Listing_ID,)
+        'Status = newProdStatus WHERE Listing_ID = ?', (listing_id,)
     )
     connection.close()

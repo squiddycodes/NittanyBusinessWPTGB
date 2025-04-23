@@ -43,7 +43,7 @@
     {% for Product_Title, Listing_ID, Category, Quantity, Status in productfile %}
     <tr>
       <td>
-          <a href="/MyProducts/EditProduct{{ Listing_ID }}">{{ Product_Title }}</a>
+          <a href="/MyProducts/EditProduct/{{ Listing_ID }}">{{ Product_Title }}</a>
       </td>
       <td>{{ Listing_ID }}</td>
       <td>{{ Category }}</td>
