@@ -28,13 +28,26 @@ def returntoHomePage():
 
 @products_bp.route("/MyProducts/EditProduct<int:listing_id>")
 def edit_product(listing_id):
-    email = request.form['email']
+    print("Hello World")
+    #email = request.form['email']
     print(listing_id)
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Listing_ID = ? AND Seller_Email = ?', (listing_id,email))
+        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
     product = cursor.fetchone()
     connection.close()
     print("product", product)
     return render_template("editproduct.html", product=product)
+
+@products_bp.route("/UpdateProduct", methods = ['POST', 'GET'])
+def update_product():
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute(
+        'UPDATE Product_Listings SET Product_Title = newProdName,'
+        'Quantity = newProdQty, '
+        'Status = newProdStatus WHERE Listing_ID = ?', (Listing_ID,)
+    )
+    connection.close()

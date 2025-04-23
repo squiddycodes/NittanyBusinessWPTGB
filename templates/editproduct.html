@@ -17,11 +17,31 @@
 </head>
 <body>
 <div align="center" class="container-sm">
-<div>
-    <h1 align = center>Edit Product</h1>
+    <div>
+        <h1 align = center>Edit Product</h1>
+    </div>
 </div>
 
+<div class="container-sm">
+    <div>
+        <h2 align = left>Original Product Details:</h2>
+    </div>
 
+    <!-- Original Product Details here -->
+    <form id="addForm" action="/UpdateProduct" method="POST">
+        <div>
+            <label for = newProdName>New Product Name:</label>
+            <input type="text" id="newProdName" name="New Product Name" required class="form-control">
+        </div>
+        <div>
+            <label for = newProdQty>New Product Quantity:</label>
+            <input type="text" id="newProdQty" name="New Product Quantity" required class="form-control">
+        </div>
+        <div>
+            <label for = newProdStatus>New Product Status:</label>
+            <input type="text" id="newProdStatus" name="New Product Status" required class="form-control">
+        </div>
+    </form>
 </div>
 </body>
 </html>
