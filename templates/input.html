@@ -40,7 +40,6 @@
                 <!-- Display fields needed for registration based on account type -->
                 <label for="accountType">Select account type to register for:</label>
                 <select id="accountType" name="accountType" onchange="showInputs()" required>
-                    <option value="">Select Option</option>
                     <option value="buyer">Buyer</option>
                     <option value="seller">Seller</option>
                     <option value="helpdesk">HelpDesk</option>
@@ -58,7 +57,7 @@
                 <label for="buyerZip">Zip Code</label>
                 <input type="text" id="buyerZip" name="buyerZip" required class="form-control"> <br />
             </div>
-            <div id="sellerFields" class="form-group" hidden>
+            <div id="sellerFields" class="form-group" >
                 <h3>Seller Information</h3>
                 <label for="sellerBusiness">Business Name</label>
                 <input type="text" id="sellerBusiness" name="sellerBusiness" required class="form-control"> <br />
@@ -73,12 +72,12 @@
                 <label for="sellerAccNum">Bank Account Number</label>
                 <input type="text" pattern="\d{8}" maxlength="8" id="sellerAccNum" name="accountNum" required class="form-control"> <br />
             </div>
-            <div id="helpdeskFields" class="form-group" hidden>
+            <div id="helpdeskFields" class="form-group" >
                 <h3>HelpDesk Information</h3>
                 <!-- QUESTION TO ASK: CAN POSITIONS BE ANYTHING OR ARE THERE SPECIFIC POSITIONS (use from database
                  and select from dropdown-->
-                <label for="hdPosition">Position</label>
-                <input type="text" id="hdPosition" name="position" required class="form-control"> <br />
+                <label for="helpPosition">Position</label>
+                <input type="text" id="helpPosition" name="helpPosition" required class="form-control"> <br />
             </div>
 
             <!-- Unhide input options based on selected dropdown value -->
@@ -179,6 +178,25 @@
       </div>
     </div>
 </div>
+
+<div class="modal fade" id="requestApprovalModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Create Account Failed</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Your account is currently under approval by Nittany Business staff. Please re-visit us later.</p>
+        </div>
+        <div class="modal-footer">
+            <a class="btn btn-success" href="/Login" role="button">Visit Login Page</a> <!-- Routes to home page -->
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <!-- End Modals -->
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -215,6 +233,13 @@
     $(document).ready(function(){
       {% if invalidAddress %}
         $('#invalidAddressModal').modal('show');
+      {% endif %}
+    });
+</script>
+<script>
+    $(document).ready(function(){
+      {% if requestApproval %}
+        $('#requestApprovalModal').modal('show');
       {% endif %}
     });
 </script>
