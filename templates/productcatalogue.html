@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>{{ email }}'s Products - Nittany Business</title>
+    <title>Product Catalogue - Nittany Business</title>
     <style>
     .button {
         color: gray;
@@ -30,6 +30,18 @@
 
 <div class = "card-body">
     <h2 class = "card-title">Products</h2>
+    <h3 class = "card-title" id="currCategory">Category: {{ currCategory }}</h3>
+    <form action="/BrowseProducts/{{ currCategory }}" method="POST"><!-- Choose which page to route to based on dropdown selection -->
+    <div class="drop-down" align="center">
+        <label for="dropdown">Select subcategory:</label>
+          <select name="dropdown" id="dropdown">
+            {% for category in subcategories %}
+                <option value="{{category}}">{{category}}</option>
+            {% endfor %}
+          </select>
+        <button type="submit">Go!</button> <!-- Submit button -->
+    </div>
+    </form>
     <table class="table table-dark">
   <thead>
     <tr>
