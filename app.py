@@ -9,6 +9,7 @@ from reviews import reviews_bp
 from registration import registration_bp
 from BrowseProducts import BrowseProducts_bp
 from products import products_bp
+from ordermanagement import ordermanagement_bp
 
 from werkzeug.serving import connection_dropped_errors
 
@@ -275,6 +276,8 @@ app.register_blueprint(reviews_bp)
 app.register_blueprint(registration_bp)
 app.register_blueprint(BrowseProducts_bp)
 app.register_blueprint(products_bp)
+
+app.register_blueprint(ordermanagement_bp)
 @app.route('/')
 def index():
     return render_template('index.html', loginFailed=False)

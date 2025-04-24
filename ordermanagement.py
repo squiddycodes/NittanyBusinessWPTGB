@@ -1,10 +1,11 @@
 from flask import Blueprint, request, session, jsonify
+import sqlite3 as sql
 from datetime import datetime
-from db import get_db  # import get_db from db.py
+#from db import get_db  # import get_db from db.py
 
-order_bp = Blueprint("order", __name__)
+ordermanagement_bp = Blueprint("ordermanagement", __name__, template_folder='templates')
 
-@order_bp.route("/place_order", methods=["POST"])
+@ordermanagement_bp.route("/place_order", methods=["POST"])
 def place_order():
     if "email" not in session:
         return jsonify({"error": "Unauthorized"}), 401
@@ -15,7 +16,8 @@ def place_order():
     order_quantity = int(data["quantity"])
     buyer_email = session["email"]
 
-    conn = get_db()
+    #conn = get_db()
+    conn = sql.connect('database.db')
     cur = conn.cursor()
 
     cur.execute("""
