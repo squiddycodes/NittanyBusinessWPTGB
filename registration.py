@@ -22,8 +22,6 @@ def getAddress(zipcode, streetnum, streetname):
         print("Something is wrong")
         return None
 
-
-
     fullAddr = address_data[
         # Input type in html form is text, convert database info to string
         (address_data["zipcode"].astype(str) == zipcode) &
@@ -31,6 +29,7 @@ def getAddress(zipcode, streetnum, streetname):
         (address_data["street_name"].astype(str) == streetname)
     ]
 
+    # No matching address found in database
     if fullAddr.empty:
         return None
 
@@ -38,7 +37,6 @@ def getAddress(zipcode, streetnum, streetname):
 
 @registration_bp.route('/CreateAccount', methods=['POST', 'GET']) #PRESS CREATE ACCOUNT
 def input():
-    print("TESTING FOR NOW")  # Form not being submitted/attempted to submit at all
     email = request.form.get('Email')
     password = request.form.get('Password')
     confirm_pwd = request.form.get('confirmPassword')
@@ -97,13 +95,13 @@ def input():
                 return render_template('sellersLandingPage.html', email=email)
 
             elif account_type == 'helpdesk':
-                helpdesk_position = request.form.get('hdPosition')
+                helpdesk_position = request.form.get('helpPosition')
 
-                connection.execute('INSERT INTO Helpdesk (email, Position) VALUES (?,?)', (email, helpdesk_position))
+                connection.execute('INSERT INTO Helpdesk (email, Position) VALUES (?,?)', (email, helpdesk_position+' - Not Approved'))
                 connection.commit()
 
                 # go back to home (could show a message indicating account needs to be approved)
-                return render_template('index.html', email=email)
+                return render_template('index.html', email=email, requestApproval=True)
 
     return render_template('input.html')
 
