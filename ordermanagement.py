@@ -1,6 +1,7 @@
 from flask import Blueprint, request, session, jsonify, render_template
+import sqlite3 as sql
 from datetime import datetime
-from db import get_db  # import get_db from db.py
+#from db import get_db  # import get_db from db.py
 
 order_bp = Blueprint("order", __name__)
 
@@ -15,7 +16,7 @@ def place_order():
     order_quantity = int(data["quantity"])
     buyer_email = session["email"]
 
-    conn = get_db()
+    conn = sql.connect('database.db')
     cur = conn.cursor()
 
     cur.execute("""
@@ -68,7 +69,7 @@ def confirm_order():
     quantity = int(request.form['quantity'])
     unit_price = float(request.form['unit_price'])
 
-    conn = get_db()
+    conn = sql.connect('database.db')
     cur = conn.cursor()
 
     cur.execute("""
