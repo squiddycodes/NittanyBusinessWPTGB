@@ -23,7 +23,7 @@ def loadProductsPage():
     connection.close()
     # Fills table with products
 
-    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", prevCategory="Root", subcategories=subCats)
+    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats)
 
 @BrowseProducts_bp.route('/BuyersHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
@@ -37,7 +37,7 @@ def returntoHomePage():
 
 @BrowseProducts_bp.route("/BrowseProducts/<int:listing_id>", methods=['POST'])
 def browse_product(listing_id):
-    print(listing_id)
+    #print(listing_id)
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
@@ -50,17 +50,24 @@ def browse_product(listing_id):
         'Quantity FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
     product = cursor.fetchone()
     connection.close()
-    print("product", product)
+    #print("product", product)
     return render_template("productPage.html", email=request.form['email'], product=product)
 
 @BrowseProducts_bp.route("/BrowseProducts/<string:currCategory>", methods=['GET', 'POST'])
 def browse_products(currCategory):
+    print("fuck")
     if request.method == 'POST':
-        selected = request.form['dropdown']
-        return redirect(url_for('BrowseProducts.browse_products', currCategory=selected,email=request.form.get('email')))
+        #selected = request.form['dropdown']
+        selected = request.form.get('dropdown')
+        print("selected:",selected)
+        if selected:
+            return redirect(url_for('BrowseProducts.browse_products', currCategory=selected,email=request.form.get('email')))
+        else:
+            return redirect(
+                url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email')))
     elif request.method == 'GET':
+        print("dsadsadas")
         email = request.args.get('email')
-        print("email:", email)
         connection = sql.connect('database.db')
         cursor = connection.cursor()
         cursor.execute(
@@ -73,13 +80,26 @@ def browse_products(currCategory):
         cursor.execute('SELECT category_name FROM Categories WHERE parent_category=?',(currCategory,))
         subCats = cleanCategories(cursor.fetchall())
         connection.close()
-        return render_template('productcatalogue.html', email=email, productfile=products, prevCategory=request.args.get('currCategory'), currCategory=currCategory,
+        return render_template('productcatalogue.html', email=email, productfile=products, currCategory=currCategory,
                                subcategories=subCats)
+    print("fuck2")
 
 @BrowseProducts_bp.route("/BrowseProducts/Back/<string:currCategory>", methods=['GET', 'POST'])
-def go_back(currCategory):
-    print("got in")
+def backToParentCategory(currCategory):#look for parent and go there
+    #get parent of currCategory, reroute to browse_products
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
 
+    cursor.execute('SELECT parent_category FROM Categories WHERE category_name=?', (currCategory,))
+    parentCategory = cursor.fetchone()
+    connection.close()
+    if parentCategory:
+        parentCategory = cleanCategories(parentCategory)
+        print(parentCategory[0])
+        return redirect(url_for('BrowseProducts.browse_products', currCategory=parentCategory[0] , email=request.form.get('email')))
+    else:
+        return redirect(
+            url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email')))
 
 def cleanCategories(categories):
     out = []

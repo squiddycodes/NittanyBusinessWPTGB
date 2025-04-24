@@ -15,6 +15,10 @@
         margin: 4px 2px;
     }
 
+    #dropdown {
+        width: 200px;
+    }
+
     div {
         padding: 20px;
         border: 10px solid gray;
@@ -48,7 +52,7 @@
             {% endfor %}
           </select>
         <button type="submit" formaction="/BrowseProducts/{{ currCategory }}">Go!</button> <!-- Submit button -->
-        <button type="submit" formaction="/BrowseProducts/Back/{{ prevCategory }}">Back</button> <!-- Submit button -->
+        <button type="submit" formaction="/BrowseProducts/Back/{{ currCategory }}">Back</button> <!-- Submit button -->
     </form>
 
     <table class="table table-dark">
