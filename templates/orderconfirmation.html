@@ -2,25 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order Confirmation - Nittany Business</title>
+    <title>Product Register Form - Nittany Business</title>
 </head>
 <body>
-    <h1>Order Confirmed!</h1>
-    <p>Thank you for your purchase!</p>
-    
-    <p><strong>Order Summary:</strong></p>
-    <ul>
-        <li><strong>Product Name:</strong> {{ product_name }}</li>
-        <li><strong>Seller:</strong> {{ seller_name }} ({{ seller_email }})</li>
-        <li><strong>Quantity:</strong> {{ quantity }}</li>
-        <li><strong>Unit Price:</strong> ${{ unit_price }}</li>
-        <li><strong>Total Price:</strong> ${{ total_price }}</li>
-        <li><strong>Order ID:</strong> {{ order_id }}</li>
-    </ul>
-    
-    <p>Your order will be processed soon. You will receive an email confirmation with tracking details once your order ships.</p>
+    <h1>Welcome {{ email }} - Please Enter the New Product Info Below</h1>
 
-    <a href="/browse">Continue Shopping</a> | 
-    <a href="/order_history">View Your Orders</a>
+    <form action="/confirm_order" method="POST">
+        <input type="hidden" name="seller_email" value="{{ email }}">
+        <label for="product_name">Product Name:</label>
+        <input type="text" id="product_name" name="product_name"><br>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity" name="quantity"><br>
+
+        <label for="unit_price">Price ($):</label>
+        <input type="number" id="unit_price" name="unit_price" step="0.01"><br>
+
+        <input type="submit" value="Submit Product">
+    </form>
 </body>
 </html>

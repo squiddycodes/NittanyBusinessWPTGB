@@ -7,57 +7,72 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Product Catalogue - Nittany Business</title>
     <style>
-    .button {
-        color: gray;
+        <style>
+    .btn {
+        color: white;
 	text-align: center;
         border: none;
 	display: inline-block;
+        margin: 4px 2px;
+    }
+
+    div {
+        padding: 20px;
+        border: 10px solid gray;
+        margin: 0;
+    }
+
+    body {
+        color:#444;line-height:1.6
     }
     </style><!-- Changing button style-->
 </head>
 <body>
-<div align="center" class="container-sm">
-<div>
-    <h1 align = center>Product Catalogue</h1>
-</div>
-<div>
-    <form action="/BuyersHomePage" method="POST">
-        <!-- Sends users back to their respective homepage -->
-        <input type = "hidden" name = "email" value = "{{ email }}">
-        <button type="submit" class="btn btn-primary">Return to HomePage</button>
-    </form>
-</div>
+<h1 align = center>Product Catalogue</h1>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+<form align="center" action="/BuyersHomePage" method="POST">
+    <!-- Sends users back to their respective homepage -->
+    <input type = "hidden" name = "email" value = "{{ email }}">
+    <button type="submit" class="btn btn-primary">Return to HomePage</button>
+</form>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
-<div class = "card-body">
+<div align="center" class="container-sm card-body">
     <h2 class = "card-title">Products</h2>
+    <h3 class = "card-title" id="currCategory">Category: {{ currCategory }}</h3>
+    <form action="/BrowseProducts/{{ currCategory }}" method="POST"><!-- Choose which page to route to based on dropdown selection -->
+    <!--<div class="drop-down" align="center"> -->
+        <label for="dropdown">Select subcategory:</label>
+          <select name="dropdown" id="dropdown">
+            {% for category in subcategories %}
+                <option value="{{category}}">{{category}}</option>
+            {% endfor %}
+          </select>
+        <button type="submit">Go!</button> <!-- Submit button -->
+   <!-- </div> -->
+    </form>
     <table class="table table-dark">
   <thead>
     <tr>
-        <th scope="col">Product Title</th>
-        <th scope="col">Product Name</th>
-        <th scope="col">Description</th>
-        <th scope="col">Category</th>
-        <th scope="col">Price</th>
-        <th scope="col">Qty</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Category</th>
+      <th scope="col">Qty</th>
     </tr>
   </thead>
   <tbody>
-    {% for Product_Title, Listing_ID, Product_Name, Product_Description, Category, Product_Price, Quantity in productfile %}
+    {% for Product_Title, Listing_ID, Category, Quantity in productfile %}
     <tr>
       <td>
-        <a href="/BrowseProducts/{{ email }}ProductPage:{{ Listing_ID }}">{{ Product_Title }}</a>
+        <a href="/BrowseProducts/{{ Listing_ID }}">{{ Product_Title }}</a>
       </td>
-      <td>{{ Product_Name }}</td>
-      <td>{{ Product_Description }}</td>
+      <td>{{ Listing_ID }}</td>
       <td>{{ Category }}</td>
-      <td>{{ Product_Price }}</td>
       <td>{{ Quantity }}</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
-
-</div>
 </div>
 </body>
 </html>

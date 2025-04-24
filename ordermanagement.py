@@ -1,11 +1,10 @@
-from flask import Blueprint, request, session, jsonify
-import sqlite3 as sql
+from flask import Blueprint, request, session, jsonify, render_template
 from datetime import datetime
-#from db import get_db  # import get_db from db.py
+from db import get_db  # import get_db from db.py
 
-ordermanagement_bp = Blueprint("ordermanagement", __name__, template_folder='templates')
+order_bp = Blueprint("order", __name__)
 
-@ordermanagement_bp.route("/place_order", methods=["POST"])
+@order_bp.route("/place_order", methods=["POST"])
 def place_order():
     if "email" not in session:
         return jsonify({"error": "Unauthorized"}), 401
@@ -16,8 +15,7 @@ def place_order():
     order_quantity = int(data["quantity"])
     buyer_email = session["email"]
 
-    #conn = get_db()
-    conn = sql.connect('database.db')
+    conn = get_db()
     cur = conn.cursor()
 
     cur.execute("""
@@ -60,17 +58,26 @@ def place_order():
     return jsonify({"message": "Order placed successfully!"})
 
 
-    cur.execute("SELECT buyer_address_id FROM Buyer WHERE email = ?", (email,))
-    row = cur.fetchone()
-    if row and all([zipcode, street_num, street_name]):
-        address_id = row[0]
-        cur.execute("""
-            UPDATE Address
-            SET zipcode = ?, street_num = ?, street_name = ?
-            WHERE address_ID = ?
-        """, (zipcode, street_num, street_name, address_id))
+@order_bp.route("/confirm_order", methods=["POST"])
+def confirm_order():
+    if "email" not in session:
+        return "Unauthorized", 401
+
+    seller_email = request.form['seller_email']
+    product_name = request.form['product_name']
+    quantity = int(request.form['quantity'])
+    unit_price = float(request.form['unit_price'])
+
+    conn = get_db()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO Product_Listings (Seller_Email, Product_Name, Quantity, Product_Price, Status)
+        VALUES (?, ?, ?, ?, 1)
+    """, (seller_email, product_name, quantity, unit_price))
 
     conn.commit()
     conn.close()
-    return jsonify({"message": "Profile updated successfully!"})
+
+    return render_template("sellersLandingPage.html", email=seller_email)
 
