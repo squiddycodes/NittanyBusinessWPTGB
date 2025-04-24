@@ -84,17 +84,48 @@
             <script>
                 function showInputs(){
                   const selectedType = document.getElementById("accountType").value;
-                  document.getElementById("buyerFields").hidden = true;
-                  document.getElementById("sellerFields").hidden = true;
-                  document.getElementById("helpdeskFields").hidden = true;
+                  bFields = document.getElementById("buyerFields");
+                  sFields = document.getElementById("sellerFields");
+                  hFields = document.getElementById("helpdeskFields");
+
+                  bFields.hidden = true;
+                  sFields.hidden = true;
+                  hFields.hidden = true;
 
                   if (selectedType === "buyer") {
-                    document.getElementById("buyerFields").hidden = false;
+                    bFields.hidden = false;
+                    addRequirement(bFields);
+                    removeRequirement(sFields);
+                    removeRequirement(hFields);
                   } else if (selectedType === "seller") {
-                    document.getElementById("sellerFields").hidden = false;
+                    sFields.hidden = false;
+                    addRequirement(sFields);
+                    removeRequirement(bFields);
+                    removeRequirement(hFields);
                   } else if (selectedType === "helpdesk") {
-                    document.getElementById("helpdeskFields").hidden = false;
+                    hFields.hidden = false;
+                    addRequirement(hFields);
+                    removeRequirement(bFields);
+                    removeRequirement(sFields);
                   }
+                }
+
+                // Adds required field RETURN TO THIS--DISABLE THE FIELDS INSTEAD OF REMOVING REQUIREMENT
+                function addRequirement(field){
+                    allFields = field.getElementsByTagName('input');
+
+                    for(let i = 0; i < allFields.length; i++){
+                        allFields[i].required = true;
+                    }
+                }
+
+                // Removes required field
+                function removeRequirement(field){
+                    allFields = field.getElementsByTagName('input');
+
+                    for(let i = 0; i < allFields.length; i++){
+                        allFields[i].required = false;
+                    }
                 }
 
                 window.onload = function () {

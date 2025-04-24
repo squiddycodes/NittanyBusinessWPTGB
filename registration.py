@@ -105,10 +105,5 @@ def input():
 
     return render_template('input.html')
 
-# more information drops down based on user type select (e.g. if select Buyer, enter
-# certain info, seller, enter other info, etc.)
-
 # if user selects to create a helpdesk account, needs approval from admin--admin approval task?
 # mark as approved or not approved
-
-# Seller: Bank balance should be 0 upon registration. Bank routing num should be 8 numbers, account num 6 numbers
