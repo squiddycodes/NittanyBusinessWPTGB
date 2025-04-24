@@ -20,8 +20,62 @@
 <div>
     <h1 align = center>Product Page</h1>
 </div>
+    <form action="/BrowseProducts" method="POST">
+        <!-- Sends users back to their respective homepage -->
+        <input type = "hidden" name = "email" value = "{{ email }}">
+        <button type="submit" class="btn btn-primary">Return to Products</button>
+    </form>
+</div>
 
+<div class="container-sm">
+    <div>
+        <h2 align = left>Original Product Details:</h2>
 
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for="ProductSeller">Product Seller: {{ product[0] }}</label>
+          </div>
+          <div class="col text-right">
+            <label for="ProductTitle">Product Title: {{ product[1] }}</label>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for = ProductName>Product Name: {{ product[2] }}</label>
+          </div>
+          <div class="col text-right">
+            <label for = ProductDescription>Product Description: {{ product[3] }}</label>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for = ProductCategory>Product Category: {{ product[4] }}</label>
+          </div>
+          <div class="col text-right">
+            <label for = ProductPrice>Product Price: {{ product[5] }}</label>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col text-left">
+            <label for = ProductQuantity>Product Quantity: {{ product[6] }}</label>
+          </div>
+        </div>
+    </div>
+</div>
+
+<div class = "container-sm">
+    <form id="update_product" action="/place_order" method="POST">
+         <input type="hidden" name="email" value="{{ email }}"> <!-- allows for tracking the buyer by their email -->
+         <div class="row mb-3">
+              <div class="col text-left">
+                <label for="QtyToBuy">Qty To Buy</label>
+                <input type="text" id="QtyToBuy" name="QtyToBuy" required class="form-control">
+              </div>
+              <div class="col text-right">
+                <button type="submit" class="btn btn-primary">Submit Changes</button>
+              </div>
+            </div>
+    </form>
 </div>
 </body>
 </html>

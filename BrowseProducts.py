@@ -13,7 +13,7 @@ def loadProductsPage():
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Status = 1')
+        'SELECT Product_Title, Listing_ID, Product_Name, Product_Description, Category, Product_Price, Quantity FROM Product_Listings WHERE Status = 1')
     products = cursor.fetchall()
     connection.close()
     # Fills table with products
@@ -25,14 +25,14 @@ def returntoHomePage():
     email = request.form['email']
     return render_template('buyersLandingPage.html', email = email)
 
-@BrowseProducts_bp.route("/BrowseProducts/<int:listing_id>")
-def browse_product(listing_id):
+@BrowseProducts_bp.route("/BrowseProducts/<string:email>ProductPage:<int:listing_id>")
+def browse_product(email,listing_id):
     print(listing_id)
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
+        'SELECT Seller_Email, Product_Title, Product_Name, Product_Description, Category, Product_Price, Quantity FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
     product = cursor.fetchone()
     connection.close()
     print("product", product)
-    return render_template("productPage.html", product=product)
+    return render_template("productPage.html", product=product, email=email)
