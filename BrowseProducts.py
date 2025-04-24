@@ -23,7 +23,7 @@ def loadProductsPage():
     connection.close()
     # Fills table with products
 
-    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats)
+    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats, keywords = ("", "Product_Name", "Listing_ID", "Quantity"))
 
 @BrowseProducts_bp.route('/BuyersHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
@@ -58,27 +58,61 @@ def browse_products(currCategory):
     if request.method == 'POST':
         #selected = request.form['dropdown']
         selected = request.form.get('dropdown')
+        keyword = request.form.get('keywordmenu')
+        keywordInput = request.form.get('KeywordInput')
         if selected:
-            return redirect(url_for('BrowseProducts.browse_products', currCategory=selected,email=request.form.get('email')))
+            if keyword:
+                return redirect(url_for('BrowseProducts.browse_products', currCategory=selected,email=request.form.get('email'), keyword=keyword, keywordInput=keywordInput))
+            else:
+                return redirect(url_for('BrowseProducts.browse_products', currCategory=selected, email=request.form.get('email'),keyword="", keywordInput=""))
         else:
-            return redirect(
-                url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email')))
+            if keyword:
+                return redirect(url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email'), keyword=keyword, keywordInput=keywordInput))
+            else:
+                return redirect(url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email'), keyword="", keywordInput=""))
     elif request.method == 'GET':
         email = request.args.get('email')
+        keyword = request.args.get('keyword')
+        keywordInput = request.args.get('keywordInput')
+        validSpecifiers = ("", "Product_Name", "Listing_ID", "Quantity")
         connection = sql.connect('database.db')
         cursor = connection.cursor()
-        cursor.execute(
-            'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
-            'FROM Product_Listings AS P '
-            'WHERE P.Status = 1 AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
-            (currCategory, currCategory))  # get all products in category or child
-        products = cursor.fetchall()
+        products = ''
+
+        if keyword == "":
+            cursor.execute(
+                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'FROM Product_Listings AS P '
+                'WHERE P.Status = 1 AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
+                (currCategory, currCategory))  # get all products in category or child
+            products = cursor.fetchall()
+        elif keyword == "Product_Name":
+            cursor.execute(
+                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'FROM Product_Listings AS P '
+                'WHERE P.Status = 1 AND P.Product_Title = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
+                (keywordInput, currCategory, currCategory))  # get all products in category or child
+            products = cursor.fetchall()
+        elif keyword == "Listing_ID":
+            cursor.execute(
+                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'FROM Product_Listings AS P '
+                'WHERE P.Status = 1 AND P.Listing_ID = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
+                (keywordInput, currCategory, currCategory))  # get all products in category or child
+            products = cursor.fetchall()
+        elif keyword == "Quantity":
+            cursor.execute(
+                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'FROM Product_Listings AS P '
+                'WHERE P.Status = 1 AND P.Quantity = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
+                (keywordInput, currCategory, currCategory))  # get all products in category or child
+            products = cursor.fetchall()
 
         cursor.execute('SELECT category_name FROM Categories WHERE parent_category=?',(currCategory,))
         subCats = cleanCategories(cursor.fetchall())
         connection.close()
         return render_template('productcatalogue.html', email=email, productfile=products, currCategory=currCategory,
-                               subcategories=subCats)
+                               subcategories=subCats, keywords = validSpecifiers)
 
 @BrowseProducts_bp.route("/BrowseProducts/Back/<string:currCategory>", methods=['GET', 'POST'])
 def backToParentCategory(currCategory):#look for parent and go there
@@ -91,10 +125,10 @@ def backToParentCategory(currCategory):#look for parent and go there
     connection.close()
     if parentCategory:
         parentCategory = cleanCategories(parentCategory)
-        return redirect(url_for('BrowseProducts.browse_products', currCategory=parentCategory[0] , email=request.form.get('email')))
+        return redirect(url_for('BrowseProducts.browse_products', currCategory=parentCategory[0] , email=request.form.get('email'), keyword="", keywordInput=""))
     else:
         return redirect(
-            url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email')))
+            url_for('BrowseProducts.browse_products', currCategory=currCategory, email=request.form.get('email'), keyword="", keywordInput=""))
 
 def cleanCategories(categories):
     out = []

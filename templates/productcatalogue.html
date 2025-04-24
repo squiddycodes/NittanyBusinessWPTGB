@@ -47,10 +47,21 @@
         <input type = "hidden" name = "email" value = "{{ email }}">
         <label for="dropdown">Select subcategory:</label>
           <select name="dropdown" id="dropdown">
+          <option value=""></option>
             {% for category in subcategories %}
                 <option value="{{category}}">{{category}}</option>
             {% endfor %}
           </select>
+        <input type = "hidden" name = "email" value = "{{ email }}">
+        <label for="keywordmenu">Select Keyword Specifier:</label>
+        <select name="keywordmenu" id="keywordmenu">
+            {% for specifiers in keywords %}
+                <option value="{{ specifiers }}">{{ specifiers }}</option>
+            {% endfor %}
+        </select><!-- Submit button -->
+        <label for="KeywordInput" class="mr-2"></label>
+        <input type="text" id="KeywordInput" name="KeywordInput" class="form-control mb-2" placeholder="Enter keyword…">
+
         <button type="submit" formaction="/BrowseProducts/{{ currCategory }}">Go!</button> <!-- Submit button -->
         <button type="submit" formaction="/BrowseProducts/Back/{{ currCategory }}">Back</button> <!-- Submit button -->
     </form>
