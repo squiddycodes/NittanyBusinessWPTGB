@@ -49,13 +49,50 @@ def edit_product(email, listing_id):
 
 @products_bp.route("/UpdateProduct", methods = ['POST', 'GET'])
 def new_product():
-    newProdTitle = request.form['newProdTitle']
-    newProdName = request.form['newProdName']
-    newProdDescription = request.form['newProdDescription']
-    newProdCategory = request.form['newProdCategory']
-    newProdQuantity = request.form['newProdQuantity']
-    newProdPrice = request.form['newProdPrice']
-    newProdStatus = request.form['newProdStatus']
+    listing_id = request.form['listing_id']
+    print("listing_id", listing_id)
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT Product_Title, '
+        'Product_Name, '
+        'Product_Description, '
+        'Category, '
+        'Quantity, '
+        'Product_Price, '
+        'Status FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
+    product = cursor.fetchone()
+    connection.close()
+
+    newProdTitle = request.form.get('newProdTitle', '').strip()
+    print(newProdTitle)
+    if not newProdTitle:
+        newProdTitle = product[0]
+
+    newProdName = request.form.get('newProdName', '').strip()
+    if not newProdName:
+        newProdName = product[1]
+
+    newProdDescription = request.form.get('newProdDescription', '').strip()
+    if not newProdDescription:
+        newProdDescription = product[2]
+
+    newProdCategory = request.form.get('newProdCategory', '').strip()
+    if not newProdCategory:
+        newProdCategory = product[3]
+
+    newProdQuantity = request.form.get('newProdQuantity', '').strip()
+    if not newProdQuantity:
+        newProdQuantity = product[4]
+
+    newProdPrice = request.form.get('newProdPrice', '').strip()
+    if not newProdPrice:
+        newProdPrice = product[5]
+
+    newProdStatus = request.form.get('newProdStatus', '').strip()
+    if not newProdStatus:
+        newProdStatus = product[6]
+
     email = request.form['email']
     print("email", email)
     connection = sql.connect('database.db')

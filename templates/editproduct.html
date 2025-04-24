@@ -59,37 +59,40 @@
         </div>
     </div>
 
+    <div>
+        <label for="EditingRules">Edit Product Details Below (Please submit N/A for no change for that attribute)</label>
+    </div>
     <!-- New Product Details here -->
     <form id="update_product" action="/UpdateProduct" method="POST">
         <input type="hidden" name="listing_id" value="{{ listing_id }}">
         <input type="hidden" name="email" value="{{ email }}">
         <div class="form-group">
             <label for = newProdTitle>New Product Title:</label>
-            <input type="text" id="newProdTitle" name="newProdTitle" required class="form-control">
+            <input type="text" id="newProdTitle" name="newProdTitle" class="form-control" placeholder="Leave blank to keep {{ product[0] }}">
         </div>
         <div class="form-group">
             <label for = newProdName>New Product Name:</label>
-            <input type="text" id="newProdName" name="newProdName" required class="form-control">
+            <input type="text" id="newProdName" name="newProdName" class="form-control" placeholder="Leave blank to keep {{ product[1] }}">
         </div>
         <div class="form-group">
             <label for = newProdDescription>New Product Description:</label>
-            <input type="text" id="newProdDescription" name="newProdDescription" required class="form-control">
+            <input type="text" id="newProdDescription" name="newProdDescription" class="form-control" placeholder="Leave blank to keep {{ product[2] }}">
         </div>
         <div class="form-group">
             <label for = newProdCategory>New Product Category:</label>
-            <input type="text" id="newProdCategory" name="newProdCategory" required class="form-control">
+            <input type="text" id="newProdCategory" name="newProdCategory" class="form-control" placeholder="Leave blank to keep {{ product[3] }}">
         </div>
         <div class="form-group">
             <label for = newProdQuantity>New Product Quantity:</label>
-            <input type="text" id="newProdQuantity" name="newProdQuantity" required class="form-control">
+            <input type="text" id="newProdQuantity" name="newProdQuantity" class="form-control" placeholder="Leave blank to keep {{ product[4] }}">
         </div>
         <div class="form-group">
             <label for = newProdPrice>New Product Price:</label>
-            <input type="text" id="newProdPrice" name="newProdPrice" required class="form-control">
+            <input type="text" id="newProdPrice" name="newProdPrice" class="form-control" placeholder="Leave blank to keep {{ product[5] }}">
         </div>
         <div class="form-group">
-            <label for = newProdStatus>New Product Status:</label>
-            <input type="text" id="newProdStatus" name="newProdStatus" required class="form-control">
+            <label for = newProdStatus>New Product Status (Note: Setting Status to 0 will remove product from marketplace, but keep product in database):</label>
+            <input type="text" id="newProdStatus" name="newProdStatus" class="form-control" placeholder="Leave blank to keep {{ product[6] }}">
         </div>
 
         <button type="submit" class="btn btn-primary">Submit Changes</button>
