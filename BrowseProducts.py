@@ -13,7 +13,7 @@ def loadProductsPage():
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity, P.Status '
+        'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
         'FROM Product_Listings AS P '
         'WHERE P.Status = 1 AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',("Root","Root"))#get all products in category or child
     products = cursor.fetchall()
@@ -52,7 +52,7 @@ def browse_products(currCategory):
         connection = sql.connect('database.db')
         cursor = connection.cursor()
         cursor.execute(
-            'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity, P.Status '
+            'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
             'FROM Product_Listings AS P '
             'WHERE P.Status = 1 AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
             (currCategory, currCategory))  # get all products in category or child

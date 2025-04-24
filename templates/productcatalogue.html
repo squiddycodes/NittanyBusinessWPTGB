@@ -49,11 +49,10 @@
       <th scope="col">Product ID</th>
       <th scope="col">Category</th>
       <th scope="col">Qty</th>
-      <th scope="col">Status</th>
     </tr>
   </thead>
   <tbody>
-    {% for Product_Title, Listing_ID, Category, Quantity, Status in productfile %}
+    {% for Product_Title, Listing_ID, Category, Quantity in productfile %}
     <tr>
       <td>
         <a href="/BrowseProducts/{{ Listing_ID }}">{{ Product_Title }}</a>
@@ -61,7 +60,6 @@
       <td>{{ Listing_ID }}</td>
       <td>{{ Category }}</td>
       <td>{{ Quantity }}</td>
-      <td>{{ Status }}</td>
     </tr>
     {% endfor %}
   </tbody>
