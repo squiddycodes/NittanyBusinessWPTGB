@@ -72,10 +72,27 @@
                 <input type="text" id="QtyToBuy" name="QtyToBuy" required class="form-control">
               </div>
               <div class="col text-right">
-                <button type="submit" class="btn btn-primary">Submit Changes</button>
+                <button type="submit" class="btn btn-primary">Place Order</button>
               </div>
             </div>
     </form>
+</div>
+<!-- Modal for Qty not working with current amount available -->
+<div class="modal fade" id="QtyOverAmtAvailable" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">QtyAmountExceeded</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>The quantity attempted to purchase was higher than current amount available. Please enter a smaller amount.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+        </div>
+      </div>
+    </div>
 </div>
 </body>
 </html>
