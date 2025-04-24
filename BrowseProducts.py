@@ -41,7 +41,13 @@ def browse_product(listing_id):
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT Product_Title, Listing_ID, Category, Quantity, Status FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
+        'SELECT Seller_Email, '
+        'Product_Title, '
+        'Product_Name, '
+        'Product_Description, '
+        'Category, '
+        'Product_Price, '
+        'Quantity FROM Product_Listings WHERE Listing_ID = ?', (listing_id,))
     product = cursor.fetchone()
     connection.close()
     print("product", product)
