@@ -64,7 +64,16 @@
     {% for Product_Title, Listing_ID, Category, Quantity in productfile %}
     <tr>
       <td>
-        <a href="/BrowseProducts/{{ Listing_ID }}">{{ Product_Title }}</a>
+          <form id="goToProduct:{{ Listing_ID }}" method="POST" style="display:inline-block;">
+              <input type="hidden" name="email" value="{{ email }}">
+              <a href="{{ Listing_ID }}" onclick="let f=document.getElementById('goToProduct:{{ Listing_ID }}');
+                          f.action='{{ url_for('BrowseProducts.browse_product', listing_id=Listing_ID) }}';
+                          f.submit();
+                          return false;">
+                {{ Product_Title }}
+              </a>
+          </form>
+
       </td>
       <td>{{ Listing_ID }}</td>
       <td>{{ Category }}</td>
