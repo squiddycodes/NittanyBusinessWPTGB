@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-import pandas as pd
+import random
 import sqlite3 as sql
 
 products_bp = Blueprint('products', __name__, template_folder='templates')
@@ -19,7 +19,8 @@ def loadSellerProducts():
 
 @products_bp.route('/ProductRegistration', methods=['POST', 'GET'])
 def loadProductRegistrar():
-    return render_template('productregisterform.html')
+    email = request.form['email']
+    return render_template('productregisterform.html', email = email)
 
 @products_bp.route('/SellerHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
@@ -47,8 +48,7 @@ def edit_product(email, listing_id):
     return render_template("editproduct.html", product=product, listing_id=listing_id, email = email)
 
 @products_bp.route("/UpdateProduct", methods = ['POST', 'GET'])
-def update_product():
-    listing_id = request.form['listing_id']
+def new_product():
     newProdTitle = request.form['newProdTitle']
     newProdName = request.form['newProdName']
     newProdDescription = request.form['newProdDescription']
@@ -57,7 +57,6 @@ def update_product():
     newProdPrice = request.form['newProdPrice']
     newProdStatus = request.form['newProdStatus']
     email = request.form['email']
-    print("listing_id to be updated: ", listing_id)
     print("email", email)
     connection = sql.connect('database.db')
 
@@ -84,3 +83,48 @@ def update_product():
     connection.close()
 
     return render_template('sellerproducts.html', email = request.form['email'], productfile = products)
+
+@products_bp.route("/AddNewProduct", methods = ['POST', 'GET'])
+def add_product():
+    newProdTitle = request.form['newProdTitle']
+    newProdName = request.form['newProdName']
+    newProdDescription = request.form['newProdDescription']
+    newProdCategory = request.form['newProdCategory']
+    newProdQuantity = request.form['newProdQuantity']
+    newProdPrice = request.form['newProdPrice']
+    newProdStatus = request.form['newProdStatus']
+    email = request.form['email']
+    print("email used to create new product: ", email)
+
+    connection = sql.connect('database.db')
+
+    new_id = random.randint(1, 3500)
+    unique = False
+
+    cursor = connection.cursor()
+
+    while not unique:
+        matching_listid = cursor.execute('SELECT COUNT(*) as rows FROM Product_Listings WHERE Listing_ID = ?', (new_id,))
+
+        if matching_listid.fetchone()[0] <= 0:
+            unique = True
+        else:
+            new_id = random.randint(1, 3500)
+
+
+    cursor.execute(
+        'INSERT INTO Product_Listings (Seller_Email,'
+        'Product_Title,'
+        'Listing_ID,'
+        'Product_Name,'
+        'Product_Description,'
+        'Category,'
+        'Quantity,'
+        'Product_Price,'
+        'Status) VALUES (?,?,?,?,?,?,?,?,?)', (email,newProdTitle,new_id,newProdName,newProdDescription,newProdCategory,newProdQuantity,newProdPrice,newProdStatus,)
+    )
+    connection.commit()
+    connection.close()
+
+
+    return render_template('sellersLandingPage.html', email = request.form['email'])

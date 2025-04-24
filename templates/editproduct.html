@@ -93,7 +93,13 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Submit Changes</button>
-        <a class="btn btn-success" href="/MyProducts" role="button">My Products</a> <!-- Routes to My Products -->
+    </form>
+</div>
+<div>
+    <form action="/MyProducts" method="POST">
+        <!-- Sends users back to their respective homepage -->
+        <input type = "hidden" name = "email" value = "{{ email }}">
+        <button type="submit" class="btn btn-primary">Return to My Products</button>
     </form>
 </div>
 </body>

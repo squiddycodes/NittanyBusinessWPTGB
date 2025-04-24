@@ -1,10 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Product Register Form - Nittany Business</title>
+    <style>
+    .button {
+        color: gray;
+	text-align: center;
+        border: none;
+	display: inline-block;
+    }
+    </style><!-- Changing button style-->
 </head>
 <body>
 <h1>Welcome {{ email }} - Please Enter the New Product Info Below</h1>
+
+<div class="container-sm">
+    <form id="new_product" action="/AddNewProduct" method="POST">
+        <input type="hidden" name="email" value="{{ email }}">
+        <div class="form-group">
+            <label for = newProdTitle>New Product Title:</label>
+            <input type="text" id="newProdTitle" name="newProdTitle" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for = newProdName>New Product Name:</label>
+            <input type="text" id="newProdName" name="newProdName" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for = newProdDescription>New Product Description:</label>
+            <input type="text" id="newProdDescription" name="newProdDescription" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for = newProdCategory>New Product Category:</label>
+            <input type="text" id="newProdCategory" name="newProdCategory" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for = newProdQuantity>New Product Quantity:</label>
+            <input type="text" id="newProdQuantity" name="newProdQuantity" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for = newProdPrice>New Product Price:</label>
+            <input type="text" id="newProdPrice" name="newProdPrice" required class="form-control">
+        </div>
+        <div class="form-group">
+            <label for = newProdStatus>New Product Status:</label>
+            <input type="text" id="newProdStatus" name="newProdStatus" required class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Changes</button>
+    </form>
+</div>
 </body>
 </html>
