@@ -23,11 +23,16 @@ def loadProductsPage():
     connection.close()
     # Fills table with products
 
-    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats)
+    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", prevCategory="Root", subcategories=subCats)
 
 @BrowseProducts_bp.route('/BuyersHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
-    email = request.form['email']
+    email = ""
+    if request.method == 'GET':
+        email = request.args.get('email')
+    elif request.method == 'POST':
+        email = request.form['email']
+
     return render_template('buyersLandingPage.html', email = email)
 
 @BrowseProducts_bp.route("/BrowseProducts/<int:listing_id>")
@@ -49,6 +54,7 @@ def browse_products(currCategory):
         return redirect(url_for('BrowseProducts.browse_products', currCategory=selected,email=request.form.get('email')))
     elif request.method == 'GET':
         email = request.args.get('email')
+        print("email:", email)
         connection = sql.connect('database.db')
         cursor = connection.cursor()
         cursor.execute(
@@ -61,8 +67,13 @@ def browse_products(currCategory):
         cursor.execute('SELECT category_name FROM Categories WHERE parent_category=?',(currCategory,))
         subCats = cleanCategories(cursor.fetchall())
         connection.close()
-        return render_template('productcatalogue.html', email=email, productfile=products, currCategory=currCategory,
+        return render_template('productcatalogue.html', email=email, productfile=products, prevCategory=request.args.get('currCategory'), currCategory=currCategory,
                                subcategories=subCats)
+
+@BrowseProducts_bp.route("/BrowseProducts/Back/<string:currCategory>", methods=['GET', 'POST'])
+def go_back(currCategory):
+    print("got in")
+
 
 def cleanCategories(categories):
     out = []
