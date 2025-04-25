@@ -1,20 +1,15 @@
-from flask import Blueprint, request, session, jsonify, render_template
+from flask import Blueprint, request, render_template
 import sqlite3 as sql
 from datetime import datetime
-#from db import get_db  # import get_db from db.py
 
-order_bp = Blueprint("order", __name__)
+order_bp = Blueprint("order", __name__, template_folder='templates')
 
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
-    if "email" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
-    data = request.json
-    seller_email = data["seller_email"]
-    listing_id = data["listing_id"]
-    order_quantity = int(data["quantity"])
-    buyer_email = session["email"]
+    buyer_email = request.form['buyer_email']
+    seller_email = request.form['seller_email']
+    listing_id = request.form['listing_id']
+    order_quantity = int(request.form['quantity'])
 
     conn = sql.connect('database.db')
     cur = conn.cursor()
@@ -26,11 +21,11 @@ def place_order():
     result = cur.fetchone()
 
     if not result:
-        return jsonify({"error": "Product not found or inactive"}), 400
+        return "Product not found or inactive"
 
     available_qty, price = result
     if order_quantity > available_qty:
-        return jsonify({"error": "Not enough quantity available"}), 400
+        return "Not enough quantity available"
 
     payment = order_quantity * price
     order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -56,14 +51,15 @@ def place_order():
     conn.commit()
     conn.close()
 
-    return jsonify({"message": "Order placed successfully!"})
-
+    return render_template("order_success.html", 
+                           buyer_email=buyer_email,
+                           seller_email=seller_email,
+                           listing_id=listing_id,
+                           quantity=order_quantity,
+                           payment=payment)
 
 @order_bp.route("/confirm_order", methods=["POST"])
 def confirm_order():
-    if "email" not in session:
-        return "Unauthorized", 401
-
     seller_email = request.form['seller_email']
     product_name = request.form['product_name']
     quantity = int(request.form['quantity'])
@@ -80,5 +76,10 @@ def confirm_order():
     conn.commit()
     conn.close()
 
-    return render_template("sellersLandingPage.html", email=seller_email)
+    return render_template("productpage.html", email=seller_email)
+
+
+
+
+
 
