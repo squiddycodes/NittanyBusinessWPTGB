@@ -37,6 +37,12 @@ def getAddress(zipcode, streetnum, streetname):
 
 @registration_bp.route('/CreateAccount', methods=['POST', 'GET']) #PRESS CREATE ACCOUNT
 def input():
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute("SELECT position FROM Helpdesk WHERE email = ?", ("request.form['Email']",))
+    result = cursor.fetchone()
+    print(result)
+
     email = request.form.get('Email')
     password = request.form.get('Password')
     confirm_pwd = request.form.get('confirmPassword')
@@ -90,7 +96,8 @@ def input():
                     return render_template('input.html', invalidAddress=True)
 
                 connection.execute('INSERT INTO Sellers (email, business_name, Business_Address_ID, bank_routing_number, bank_account_number, balance)'
-                                   'VALUES (?,?,?,?,?,?)', (email, business, address_id, routing_num, account_num,0))
+                                   'VALUES (?,?,?,?,?,?)', (email, business, address_id, routing_num, account_num, 0))
+
                 connection.commit()
                 return render_template('sellersLandingPage.html', email=email)
 
@@ -101,7 +108,7 @@ def input():
                 connection.commit()
 
                 # go back to home (could show a message indicating account needs to be approved)
-                return render_template('index.html', email=email, requestApproval=True)
+                return render_template('input.html', email=email, requestApproval=True)
 
     return render_template('input.html')
 

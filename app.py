@@ -297,7 +297,17 @@ def name():
             elif userType == 'S':
                 return render_template('sellersLandingPage.html', email=request.form['Email'])  # go to landing page
             elif userType == 'H':
+                connection = sql.connect('database.db')
+                cursor = connection.cursor()
+                email = request.form['Email']
+                cursor.execute("SELECT Position FROM Helpdesk WHERE email = ?", (email, ))
+                result = cursor.fetchone()
+
+                # Account has yet to be approved by staff, cannot log in with this account
+                if ' - Not Approved' in result[0]:
+                    return render_template("index.html", helpdeskNotApproved=True)
                 return render_template('helpdeskLandingPage.html', email=request.form['Email'])  # go to landing page
+
             else:
                 print("User is not in a buyer, seller, or helpdesk table, or is in multiple")
                 return render_template("index.html", loginFailed=True)
@@ -326,8 +336,6 @@ def getUserType(email):#returns user type, 'B', 'S', 'H' - if no user, returns '
     if helpdesk.fetchone():
         result += 'H'
     return result
-
-
 
 
 

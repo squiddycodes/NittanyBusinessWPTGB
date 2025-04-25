@@ -68,9 +68,9 @@
                 <label for="sellerZip">Zip Code</label>
                 <input type="text" id="sellerZip" name="sellerZip" required class="form-control"> <br />
                 <label for="sellerRoutNum">Bank Routing Number (xxxx-xxxx-x)</label>
-                <input type="text" pattern="[0-9]{4}-[0-9]{4}-[0-9]{1}" id="sellerRoutNum" name="routingNum" required class="form-control"> <br />  <!-- Regex to control input format -->
+                <input type="text" pattern="[0-9]{4}-[0-9]{4}-[0-9]{1}" id="sellerRoutNum" name="sellerRoutNum" required class="form-control"> <br />  <!-- Regex to control input format -->
                 <label for="sellerAccNum">Bank Account Number</label>
-                <input type="text" pattern="\d{8}" maxlength="8" id="sellerAccNum" name="accountNum" required class="form-control"> <br />
+                <input type="text" pattern="\d{8}" maxlength="8" id="sellerAccNum" name="sellerAccNum" required class="form-control"> <br />
             </div>
             <div id="helpdeskFields" class="form-group" >
                 <h3>HelpDesk Information</h3>
@@ -94,38 +94,29 @@
 
                   if (selectedType === "buyer") {
                     bFields.hidden = false;
-                    addRequirement(bFields);
-                    removeRequirement(sFields);
-                    removeRequirement(hFields);
+                    adjustInputs(bFields, true);
+                    adjustInputs(sFields, false);
+                    adjustInputs(hFields, false);
                   } else if (selectedType === "seller") {
                     sFields.hidden = false;
-                    addRequirement(sFields);
-                    removeRequirement(bFields);
-                    removeRequirement(hFields);
+                    adjustInputs(sFields, true);
+                    adjustInputs(bFields, false);
+                    adjustInputs(hFields, false);
                   } else if (selectedType === "helpdesk") {
                     hFields.hidden = false;
-                    addRequirement(hFields);
-                    removeRequirement(bFields);
-                    removeRequirement(sFields);
+                    adjustInputs(hFields, true);
+                    adjustInputs(bFields, false);
+                    adjustInputs(sFields, false);
                   }
                 }
 
-                // Adds required field RETURN TO THIS--DISABLE THE FIELDS INSTEAD OF REMOVING REQUIREMENT
-                function addRequirement(field){
-                    allFields = field.getElementsByTagName('input');
-
-                    for(let i = 0; i < allFields.length; i++){
-                        allFields[i].required = true;
-                    }
-                }
-
-                // Removes required field
-                function removeRequirement(field){
-                    allFields = field.getElementsByTagName('input');
-
-                    for(let i = 0; i < allFields.length; i++){
-                        allFields[i].required = false;
-                    }
+                // Adjust hidden fields to be disabled and visible fields to be enabled
+                function adjustInputs(fieldType, hiddenState) {
+                  fieldType.hidden = !hiddenState;
+                  const inputs = fieldType.querySelectorAll("input, select, textarea");
+                  for (let i = 0; i < inputs.length; i++) {
+                    inputs[i].disabled = !hiddenState;
+                  }
                 }
 
                 window.onload = function () {
