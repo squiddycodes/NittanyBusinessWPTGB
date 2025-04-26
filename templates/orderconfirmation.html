@@ -13,13 +13,13 @@
         border: none;
         display: inline-block;
     }
-    </style><!-- Changing button style-->
+    </style>
 </head>
 <body>
 <div align="center" class="container-sm">
     <div>
         <h1>Order Confirmation</h1>
-        <p>Thank you for placing your order! Here are the details:</p>
+        <p>Thank you for placing your order! Please review the details below before confirming:</p>
     </div>
 
     <!-- Product and Order Summary -->
@@ -27,64 +27,74 @@
         <h3>Order Details:</h3>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="BuyerEmail">Buyer Email: {{ buyer_email }}</label>
+                <label>Buyer Email: {{ buyer_email }}</label>
             </div>
             <div class="col text-right">
-                <label for="SellerEmail">Seller Email: {{ seller_email }}</label>
+                <label>Seller Email: {{ seller_email }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ListingID">Listing ID: {{ listing_id }}</label>
+                <label>Listing ID: {{ listing_id }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductQuantity">Quantity Ordered: {{ quantity }}</label>
+                <label>Quantity Ordered: {{ quantity }}</label>
             </div>
             <div class="col text-right">
-                <label for="Payment">Total Payment: ${{ payment }}</label>
+                <label>Total Payment: ${{ payment }}</label>
             </div>
         </div>
     </div>
 
-    <!-- Product Details (From Product Register) -->
+    <!-- Product Details -->
     <div class="container-sm">
         <h3>Product Information:</h3>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductTitle">Product Title: {{ product_title }}</label>
+                <label>Product Title: {{ product_title }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductName">Product Name: {{ product_name }}</label>
+                <label>Product Name: {{ product_name }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductDescription">Product Description: {{ product_description }}</label>
+                <label>Product Description: {{ product_description }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductCategory">Product Category: {{ product_category }}</label>
+                <label>Product Category: {{ product_category }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductPrice">Unit Price: ${{ unit_price }}</label>
+                <label>Unit Price: ${{ unit_price }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="ProductQuantityAvailable">Quantity Available: {{ available_qty }}</label>
+                <label>Quantity Available: {{ available_qty }}</label>
             </div>
         </div>
     </div>
 
+    <!-- Confirm and Return Buttons -->
     <div class="container-sm">
-        <form action="/BrowseProducts" method="POST">
+        <form action="/confirm_order" method="POST">
+            <input type="hidden" name="buyer_email" value="{{ buyer_email }}">
+            <input type="hidden" name="seller_email" value="{{ seller_email }}">
+            <input type="hidden" name="listing_id" value="{{ listing_id }}">
+            <input type="hidden" name="quantity" value="{{ quantity }}">
+            <input type="hidden" name="payment" value="{{ payment }}">
+            <button type="submit" class="btn btn-success">Confirm Order</button>
+        </form>
+
+        <form action="/BrowseProducts" method="POST" style="margin-top: 10px;">
             <input type="hidden" name="email" value="{{ buyer_email }}">
             <button type="submit" class="btn btn-primary">Return to Products</button>
         </form>
@@ -92,3 +102,4 @@
 </div>
 </body>
 </html>
+
