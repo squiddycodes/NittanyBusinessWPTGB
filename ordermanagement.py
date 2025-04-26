@@ -6,19 +6,15 @@ order_bp = Blueprint("order", __name__, template_folder='templates')
 
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
-    print("Made it here")
-    buyer_email = request.form['email']  # Email from productpage.html
-    print("Buyer email: ", buyer_email)
+    buyer_email = request.form['email']
     seller_email = request.form['seller_email']
-    print("seller_email: ", seller_email)
     listing_id = request.form['listing_id']
-    print("listing_id: ", listing_id)
-    order_quantity = int(request.form['QtyToBuy'])  # Quantity buyer wants to purchase
-    print("order_quantity: ", order_quantity)
+    order_quantity = int(request.form['QtyToBuy'])
+
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
-    # Fetch product details from the database
+    # Fetch product details
     cur.execute("""
         SELECT Quantity, Product_Price FROM Product_Listings 
         WHERE Seller_Email = ? AND Listing_ID = ? AND Status = 1
@@ -26,25 +22,25 @@ def place_order():
     result = cur.fetchone()
 
     if not result:
-        return "Product not found or inactive"
+        conn.close()
+        return "Product not found or inactive."
 
     available_qty, price = result
 
-    # Ensure sufficient stock is available
     if order_quantity > available_qty:
-        return "Not enough quantity available"
+        conn.close()
+        return "Not enough quantity available. Please go back and try again."
 
-    # Calculate total payment for the order
     payment = order_quantity * price
     order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Insert order details into the Orders table
+    # Insert into Orders table
     cur.execute("""
         INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Date, Quantity, Payment)
         VALUES (?, ?, ?, ?, ?, ?)
     """, (seller_email, listing_id, buyer_email, order_date, order_quantity, payment))
 
-    # Update product quantity and status
+    # Update Product_Listings
     new_qty = available_qty - order_quantity
     new_status = 2 if new_qty == 0 else 1
 
@@ -54,22 +50,22 @@ def place_order():
         WHERE Seller_Email = ? AND Listing_ID = ?
     """, (new_qty, new_status, seller_email, listing_id))
 
-    # Add payment to the seller's balance
+    # Update Seller balance
     cur.execute("""
-        UPDATE Sellers SET balance = balance + ? WHERE email = ?
+        UPDATE Sellers 
+        SET balance = balance + ? 
+        WHERE email = ?
     """, (payment, seller_email))
 
     conn.commit()
     conn.close()
 
-    # Render order confirmation page with necessary details
     return render_template("orderconfirmation.html", 
                            buyer_email=buyer_email,
                            seller_email=seller_email,
                            listing_id=listing_id,
                            quantity=order_quantity,
                            payment=payment)
-
 
 @order_bp.route("/confirm_order", methods=["POST"])
 def confirm_order():
@@ -84,32 +80,31 @@ def confirm_order():
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
-    # Insert the new product into the Product_Listings table
+    # Insert product into Product_Listings
     cur.execute("""
         INSERT INTO Product_Listings (Seller_Email, Product_Name, Quantity, Product_Price, Status)
         VALUES (?, ?, ?, ?, 1)
     """, (seller_email, product_name, quantity, unit_price))
 
-    # Retrieve the last inserted listing ID
+    # Get new listing ID
     cur.execute("SELECT last_insert_rowid()")
     listing_id = cur.fetchone()[0]
 
     conn.commit()
     conn.close()
 
-    # Prepare product details to pass to the productpage.html
     product = [
-        seller_email,         
-        product_title,        
-        product_name,         
+        seller_email,
+        product_title,
+        product_name,
         product_description,
-        product_category,     
-        unit_price,           
-        quantity              
+        product_category,
+        unit_price,
+        quantity
     ]
 
-    # Render the product page with the new product details
     return render_template("productpage.html", email=seller_email, product=product, listing_id=listing_id)
+
 
 
 
