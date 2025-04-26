@@ -77,21 +77,7 @@ def confirm_order():
     quantity = int(request.form['quantity'])
     unit_price = float(request.form['unit_price'])
 
-    conn = sql.connect('database.db')
-    cur = conn.cursor()
-
-    # Insert product into Product_Listings
-    cur.execute("""
-        INSERT INTO Product_Listings (Seller_Email, Product_Name, Quantity, Product_Price, Status)
-        VALUES (?, ?, ?, ?, 1)
-    """, (seller_email, product_name, quantity, unit_price))
-
-    # Get new listing ID
-    cur.execute("SELECT last_insert_rowid()")
-    listing_id = cur.fetchone()[0]
-
-    conn.commit()
-    conn.close()
+    # No database insertion here — you asked to remove reinsertion.
 
     product = [
         seller_email,
@@ -103,8 +89,7 @@ def confirm_order():
         quantity
     ]
 
-    return render_template("productpage.html", email=seller_email, product=product, listing_id=listing_id)
-
+    return render_template("productpage.html", email=seller_email, product=product)
 
 
 
