@@ -52,7 +52,7 @@ def place_order():
     conn.commit()
     conn.close()
 
-    return render_template("order_success.html", 
+    return render_template("orderconfirmation.html", 
                            buyer_email=buyer_email,
                            seller_email=seller_email,
                            listing_id=listing_id,
