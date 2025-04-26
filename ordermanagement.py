@@ -4,17 +4,17 @@ from datetime import datetime
 
 order_bp = Blueprint("order", __name__, template_folder='templates')
 
-
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
-    buyer_email = request.form['buyer_email']
+    buyer_email = request.form['email']  # Email from productpage.html
     seller_email = request.form['seller_email']
     listing_id = request.form['listing_id']
-    order_quantity = int(request.form['quantity'])
+    order_quantity = int(request.form['QtyToBuy'])  # Quantity buyer wants to purchase
 
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
+    # Fetch product details from the database
     cur.execute("""
         SELECT Quantity, Product_Price FROM Product_Listings 
         WHERE Seller_Email = ? AND Listing_ID = ? AND Status = 1
@@ -25,17 +25,22 @@ def place_order():
         return "Product not found or inactive"
 
     available_qty, price = result
+
+    # Ensure sufficient stock is available
     if order_quantity > available_qty:
         return "Not enough quantity available"
 
+    # Calculate total payment for the order
     payment = order_quantity * price
     order_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    # Insert order details into the Orders table
     cur.execute("""
         INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Date, Quantity, Payment)
         VALUES (?, ?, ?, ?, ?, ?)
     """, (seller_email, listing_id, buyer_email, order_date, order_quantity, payment))
 
+    # Update product quantity and status
     new_qty = available_qty - order_quantity
     new_status = 2 if new_qty == 0 else 1
 
@@ -45,6 +50,7 @@ def place_order():
         WHERE Seller_Email = ? AND Listing_ID = ?
     """, (new_qty, new_status, seller_email, listing_id))
 
+    # Add payment to the seller's balance
     cur.execute("""
         UPDATE Sellers SET balance = balance + ? WHERE email = ?
     """, (payment, seller_email))
@@ -52,6 +58,7 @@ def place_order():
     conn.commit()
     conn.close()
 
+    # Render order confirmation page with necessary details
     return render_template("orderconfirmation.html", 
                            buyer_email=buyer_email,
                            seller_email=seller_email,
@@ -73,20 +80,20 @@ def confirm_order():
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
-    # Insert into DB using only the available fields in schema
+    # Insert the new product into the Product_Listings table
     cur.execute("""
         INSERT INTO Product_Listings (Seller_Email, Product_Name, Quantity, Product_Price, Status)
         VALUES (?, ?, ?, ?, 1)
     """, (seller_email, product_name, quantity, unit_price))
 
-    # Get the last inserted listing ID (if needed)
+    # Retrieve the last inserted listing ID
     cur.execute("SELECT last_insert_rowid()")
     listing_id = cur.fetchone()[0]
 
     conn.commit()
     conn.close()
 
-    # Prepare full product info to render in productpage.html
+    # Prepare product details to pass to the productpage.html
     product = [
         seller_email,         
         product_title,        
@@ -97,7 +104,9 @@ def confirm_order():
         quantity              
     ]
 
+    # Render the product page with the new product details
     return render_template("productpage.html", email=seller_email, product=product, listing_id=listing_id)
+
 
 
 
