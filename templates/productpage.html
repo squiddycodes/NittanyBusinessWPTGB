@@ -66,6 +66,8 @@
 <div class = "container-sm">
     <form id="update_product" action="/place_order" method="POST">
          <input type="hidden" name="email" value="{{ email }}"> <!-- allows for tracking the buyer by their email -->
+         <input type="hidden" name="seller_email" value="{{ product[0] }}">
+         <input type="hidden" name="listing_id" value="{{ listing_id }}">
          <div class="row mb-3">
               <div class="col text-left">
                 <label for="QtyToBuy">Qty To Buy</label>

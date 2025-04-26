@@ -37,7 +37,7 @@ def returntoHomePage():
 
 @BrowseProducts_bp.route("/BrowseProducts/<int:listing_id>", methods=['POST'])
 def browse_product(listing_id):
-    #print(listing_id)
+    print(listing_id)
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
@@ -51,7 +51,7 @@ def browse_product(listing_id):
     product = cursor.fetchone()
     connection.close()
     #print("product", product)
-    return render_template("productPage.html", email=request.form['email'], product=product)
+    return render_template("productPage.html", email=request.form['email'], product=product, listing_id = listing_id)
 
 @BrowseProducts_bp.route("/BrowseProducts/<string:currCategory>", methods=['GET', 'POST'])
 def browse_products(currCategory):

@@ -6,11 +6,15 @@ order_bp = Blueprint("order", __name__, template_folder='templates')
 
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
+    print("Made it here")
     buyer_email = request.form['email']  # Email from productpage.html
+    print("Buyer email: ", buyer_email)
     seller_email = request.form['seller_email']
+    print("seller_email: ", seller_email)
     listing_id = request.form['listing_id']
+    print("listing_id: ", listing_id)
     order_quantity = int(request.form['QtyToBuy'])  # Quantity buyer wants to purchase
-
+    print("order_quantity: ", order_quantity)
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
