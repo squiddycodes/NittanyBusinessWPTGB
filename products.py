@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, request
 import random
 import sqlite3 as sql
 
+from pandas.core.interchange.from_dataframe import protocol_df_chunk_to_pandas
+
 products_bp = Blueprint('products', __name__, template_folder='templates')
 
 @products_bp.route('/MyProducts', methods=['POST', 'GET'])
@@ -165,3 +167,22 @@ def add_product():
 
 
     return render_template('sellersLandingPage.html', email = request.form['email'])
+
+@products_bp.route("/ReviewRequests", methods = ['POST', 'GET'])
+def reviewrequests():
+    email = request.form['email']
+
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE helpdesk_staff_email = ?',
+        (email,))
+    requests = cursor.fetchall()
+    connection.close()
+
+    return render_template('reviewRequests.html', email = email, requests = requests)
+
+@products_bp.route("/ReturntoHelpDesk", methods = ['POST', 'GET'])
+def returntoHelpDesk():
+    email = request.form['email']
+    return render_template('helpdeskLandingPage.html', email = email)

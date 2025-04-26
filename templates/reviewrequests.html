@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Home - Nittany Business</title>
+    <style>
+    .btn {
+        color: white;
+	text-align: center;
+        border: none;
+	display: inline-block;
+        margin: 4px 2px;
+    }
+
+    div {
+        padding: 20px;
+        border: 10px solid gray;
+        margin: 0;
+    }
+
+    body {
+        color:#444;line-height:1.6
+    }
+    </style><!-- Changing button style-->
+</head>
+<body>
+    <div align="center" class="container-sm">
+        <h1>Welcome {{ email }}</h1>
+        <h2>Check your Requests Here</h2>
+        <form action="/ReturntoHelpDesk" method="POST">
+            <input type = "hidden" name = "email" value = "{{ email }}">
+            <button type="submit" class="btn btn-primary">Return to HomePage</button>
+        </form>
+
+        <table class="table table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Request ID</th>
+              <th scope="col">Request Sender</th>
+              <th scope="col">Request Type</th>
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for request_id, sender_email, request_type, request_desc in requests %}
+            <tr>
+              <td>
+                  <!--<a href="/MyProducts/EditProduct/{{ email }}Editing{{ Listing_ID }}">{{ Product_Title }}</a>-->
+                  {{ request_id }}
+              </td>
+              <td>{{ sender_email }}</td>
+              <td>{{ request_type }}</td>
+              <td>{{ request_desc }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    </div>
+</body>
+</html>
