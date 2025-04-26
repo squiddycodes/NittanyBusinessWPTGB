@@ -4,6 +4,7 @@ from datetime import datetime
 
 order_bp = Blueprint("order", __name__, template_folder='templates')
 
+
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
     buyer_email = request.form['buyer_email']
@@ -58,29 +59,45 @@ def place_order():
                            quantity=order_quantity,
                            payment=payment)
 
+
 @order_bp.route("/confirm_order", methods=["POST"])
 def confirm_order():
     seller_email = request.form['seller_email']
+    product_title = request.form['product_title']
     product_name = request.form['product_name']
+    product_description = request.form['product_description']
+    product_category = request.form['product_category']
     quantity = int(request.form['quantity'])
     unit_price = float(request.form['unit_price'])
 
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
+    # Insert into DB using only the available fields in schema
     cur.execute("""
         INSERT INTO Product_Listings (Seller_Email, Product_Name, Quantity, Product_Price, Status)
         VALUES (?, ?, ?, ?, 1)
     """, (seller_email, product_name, quantity, unit_price))
 
+    # Get the last inserted listing ID (if needed)
+    cur.execute("SELECT last_insert_rowid()")
+    listing_id = cur.fetchone()[0]
+
     conn.commit()
     conn.close()
 
-    return render_template("productpage.html", email=seller_email)
+    # Prepare full product info to render in productpage.html
+    product = [
+        seller_email,         
+        product_title,        
+        product_name,         
+        product_description,
+        product_category,     
+        unit_price,           
+        quantity              
+    ]
 
-
-
-
+    return render_template("productpage.html", email=seller_email, product=product, listing_id=listing_id)
 
 
 
