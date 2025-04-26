@@ -1,34 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Product Register Form - Nittany Business</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Order Confirmation - Nittany Business</title>
+    <style>
+    .button {
+        color: gray;
+        text-align: center;
+        border: none;
+        display: inline-block;
+    }
+    </style><!-- Changing button style-->
 </head>
 <body>
-    <h1>Welcome {{ email }} - Please Enter the New Product Info Below</h1>
+<div align="center" class="container-sm">
+    <div>
+        <h1>Order Confirmation</h1>
+        <p>Thank you for placing your order! Here are the details:</p>
+    </div>
 
-    <form action="/confirm_order" method="POST">
-        <input type="hidden" name="seller_email" value="{{ email }}">
+    <!-- Product and Order Summary -->
+    <div class="container-sm">
+        <h3>Order Details:</h3>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="BuyerEmail">Buyer Email: {{ buyer_email }}</label>
+            </div>
+            <div class="col text-right">
+                <label for="SellerEmail">Seller Email: {{ seller_email }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ListingID">Listing ID: {{ listing_id }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductQuantity">Quantity Ordered: {{ quantity }}</label>
+            </div>
+            <div class="col text-right">
+                <label for="Payment">Total Payment: ${{ payment }}</label>
+            </div>
+        </div>
+    </div>
 
-        <label for="product_title">Product Title:</label>
-        <input type="text" id="product_title" name="product_title" required><br>
+    <!-- Product Details (From Product Register) -->
+    <div class="container-sm">
+        <h3>Product Information:</h3>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductTitle">Product Title: {{ product_title }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductName">Product Name: {{ product_name }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductDescription">Product Description: {{ product_description }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductCategory">Product Category: {{ product_category }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductPrice">Unit Price: ${{ unit_price }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="ProductQuantityAvailable">Quantity Available: {{ available_qty }}</label>
+            </div>
+        </div>
+    </div>
 
-        <label for="product_name">Product Name:</label>
-        <input type="text" id="product_name" name="product_name" required><br>
-
-        <label for="product_description">Product Description:</label><br>
-        <textarea id="product_description" name="product_description" rows="4" cols="50" required></textarea><br>
-
-        <label for="product_category">Product Category:</label>
-        <input type="text" id="product_category" name="product_category" required><br>
-
-        <label for="quantity">Quantity:</label>
-        <input type="number" id="quantity" name="quantity" min="1" required><br>
-
-        <label for="unit_price">Price ($):</label>
-        <input type="number" id="unit_price" name="unit_price" step="0.01" min="0" required><br>
-
-        <input type="submit" value="Submit Product">
-    </form>
+    <div class="container-sm">
+        <form action="/BrowseProducts" method="POST">
+            <input type="hidden" name="email" value="{{ buyer_email }}">
+            <button type="submit" class="btn btn-primary">Return to Products</button>
+        </form>
+    </div>
+</div>
 </body>
 </html>
