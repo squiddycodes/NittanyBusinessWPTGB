@@ -19,12 +19,6 @@
         width: 200px;
     }
 
-    div {
-        padding: 20px;
-        border: 10px solid gray;
-        margin: 0;
-    }
-
     body {
         color:#444;line-height:1.6
     }
@@ -113,19 +107,19 @@
             <div class="mt-2">
                 <label for="rateNumber" style="font-weight: bold">Choose a rating from 1 to 5:</label> <br />
             </div>
-            <div class="btn-group mt-2" role="group">
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(1)">1</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(2)">2</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(3)">3</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(4)">4</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(5)">5</button>
+            <div class="btn-group mt-2" role="group" >
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(1)">1</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(2)">2</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(3)">3</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(4)">4</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(5)">5</button>
             </div>
             <h6 class="mt-2" id="currentRating">No rating selected yet.</h6>
 
             <div class="mt-5">
                 <form id="reviewForm" action="">
                     <label for="reviewInput" style="font-weight: bold">How was your experience? (Max. 100 characters)</label> <br />
-                    <textarea id="reviewInput" maxlength="100" style="height: 200px; width: 400px" placeholder="Begin writing here..."></textarea>
+                    <textarea id="reviewInput" maxlength="100" style="height: 200px; width: 450px" placeholder="Begin writing here..."></textarea>
                 </form>
             </div>
         </div>
