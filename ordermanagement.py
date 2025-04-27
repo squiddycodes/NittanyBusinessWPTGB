@@ -36,6 +36,10 @@ def place_order():
         conn.close()
         return "Requested quantity exceeds available stock."
 
+    # Ensure unit_price is a float
+    unit_price = float(unit_price)
+
+
     # Calculate the payment (total cost) based on the quantity and unit price
     payment = unit_price * order_quantity
 
