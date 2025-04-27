@@ -10,7 +10,7 @@ def place_order():
     buyer_email = request.form['email']       
     seller_email = request.form['seller_email']
     listing_id = request.form['listing_id']
-    order_quantity = float(request.form['QtyToBuy'])  # The quantity the buyer wants to purchase
+    order_quantity = int(request.form['QtyToBuy'])  # The quantity the buyer wants to purchase
 
     # Connect to the database
     conn = sql.connect('database.db')
@@ -37,7 +37,7 @@ def place_order():
         return "Requested quantity exceeds available stock."
 
     # Clean the unit_price by removing the dollar sign and converting it to a float
-    unit_price = float(unit_price.replace('$', '').strip())
+    unit_price = int(unit_price.replace('$', '').strip())
 
     # Calculate the payment (total cost) based on the quantity and unit price
     payment = unit_price * order_quantity
