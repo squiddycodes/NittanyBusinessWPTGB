@@ -6,6 +6,30 @@ order_bp = Blueprint("order", __name__, template_folder='templates')
 
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
+    # This was originally confirm_order functionality
+    seller_email = request.form['seller_email']
+    product_title = request.form['product_title']
+    product_name = request.form['product_name']
+    product_description = request.form['product_description']
+    product_category = request.form['product_category']
+    quantity = int(request.form['quantity'])
+    unit_price = float(request.form['unit_price'])
+
+    product = [
+        seller_email,
+        product_title,
+        product_name,
+        product_description,
+        product_category,
+        unit_price,
+        quantity
+    ]
+
+    return render_template("productpage.html", email=seller_email, product=product)
+
+@order_bp.route("/confirm_order", methods=["POST"])
+def confirm_order():
+    # This was originally place_order functionality
     buyer_email = request.form['email']
     seller_email = request.form['seller_email']
     listing_id = request.form['listing_id']
@@ -67,29 +91,6 @@ def place_order():
                            quantity=order_quantity,
                            payment=payment)
 
-@order_bp.route("/confirm_order", methods=["POST"])
-def confirm_order():
-    seller_email = request.form['seller_email']
-    product_title = request.form['product_title']
-    product_name = request.form['product_name']
-    product_description = request.form['product_description']
-    product_category = request.form['product_category']
-    quantity = int(request.form['quantity'])
-    unit_price = float(request.form['unit_price'])
-
-    # No database insertion here — you asked to remove reinsertion.
-
-    product = [
-        seller_email,
-        product_title,
-        product_name,
-        product_description,
-        product_category,
-        unit_price,
-        quantity
-    ]
-
-    return render_template("productpage.html", email=seller_email, product=product)
 
 
 
