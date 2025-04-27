@@ -32,6 +32,9 @@ def place_order():
     if order_quantity > available_qty:
         return "Requested quantity exceeds available stock."
 
+
+    unit_price = float(request.form['unit_price'])
+
     payment = unit_price * order_quantity
 
     return render_template("orderconfirmation.html", 
