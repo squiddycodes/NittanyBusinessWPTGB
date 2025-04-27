@@ -51,22 +51,22 @@
                 <label for="buyerBusiness">Business Name</label>
                 <input type="text" id="buyerBusiness" name="buyerBusiness" required class="form-control"> <br />
                 <label for="buyerStNum">Street Number</label>
-                <input type="text" id="buyerStNum" name="buyerStNum" required class="form-control">
+                <input type="number" min="0" id="buyerStNum" name="buyerStNum" required class="form-control">
                 <label for="buyerStName">Street Name</label>
                 <input type="text" id="buyerStName" name="buyerStName" required class="form-control">
                 <label for="buyerZip">Zip Code</label>
-                <input type="text" id="buyerZip" name="buyerZip" required class="form-control"> <br />
+                <input type="number" min="0" id="buyerZip" name="buyerZip" required class="form-control"> <br />
             </div>
             <div id="sellerFields" class="form-group" >
                 <h3>Seller Information</h3>
                 <label for="sellerBusiness">Business Name</label>
                 <input type="text" id="sellerBusiness" name="sellerBusiness" required class="form-control"> <br />
                 <label for="sellerStNum">Street Number</label>
-                <input type="text" id="sellerStNum" name="sellerStNum" required class="form-control">
+                <input type="number" min="0" id="sellerStNum" name="sellerStNum" required class="form-control">
                 <label for="sellerStName">Street Name</label>
                 <input type="text" id="sellerStName" name="sellerStName" required class="form-control">
                 <label for="sellerZip">Zip Code</label>
-                <input type="text" id="sellerZip" name="sellerZip" required class="form-control"> <br />
+                <input type="number" min="0" id="sellerZip" name="sellerZip" required class="form-control"> <br />
                 <label for="sellerRoutNum">Bank Routing Number (xxxx-xxxx-x)</label>
                 <input type="text" pattern="[0-9]{4}-[0-9]{4}-[0-9]{1}" id="sellerRoutNum" name="sellerRoutNum" required class="form-control"> <br />  <!-- Regex to control input format -->
                 <label for="sellerAccNum">Bank Account Number</label>

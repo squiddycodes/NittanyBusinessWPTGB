@@ -3,6 +3,7 @@ import sqlite3 as sql
 import hashlib
 import os
 import pandas as pd
+import random
 
 #app = create_app()
 registration_bp = Blueprint('registration', __name__, template_folder='templates')
@@ -14,13 +15,9 @@ def hash(input):
     return hashlib.sha256(input.encode('utf-8')).hexdigest()
 
 # Find if the address that the user inputs during creation is linked to an address ID
-def getAddress(zipcode, streetnum, streetname):
+def getAddress(zipcode, streetnum, streetname, connection):
     address_path = os.path.join('NittanyBusinessDataset_v3', 'Address.csv')
     address_data = pd.read_csv(address_path)
-
-    if not all(col in address_data.columns for col in ["zipcode", "street_num", "street_name"]):
-        print("Something is wrong")
-        return None
 
     fullAddr = address_data[
         # Input type in html form is text, convert database info to string
@@ -29,19 +26,30 @@ def getAddress(zipcode, streetnum, streetname):
         (address_data["street_name"].astype(str) == streetname)
     ]
 
-    # No matching address found in database
+    # No matching address found in database, add to database and create new address ID
     if fullAddr.empty:
-        return None
+        existing_ids = set(address_data['address_id'].astype(str))
+
+        # Continue generating IDs until a unique one is made
+        while True:
+            newId = ''.join(random.choices('0123456789abcdef', k=32))
+            if newId not in existing_ids:
+                break
+
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO Address (address_id, zipcode, street_num, street_name) VALUES (?,?,?,?)", (newId, zipcode, streetnum, streetname))
+        connection.commit()
+
+        return newId
 
     return fullAddr.iloc[0]["address_id"]
 
 @registration_bp.route('/CreateAccount', methods=['POST', 'GET']) #PRESS CREATE ACCOUNT
 def input():
-    connection = sql.connect('database.db')
-    cursor = connection.cursor()
-    cursor.execute("SELECT position FROM Helpdesk WHERE email = ?", ("request.form['Email']",))
-    result = cursor.fetchone()
-    print(result)
+    # connection = sql.connect('database.db')
+    # cursor = connection.cursor()
+    # cursor.execute("SELECT position FROM Helpdesk WHERE email = ?", ("request.form['Email']",))
+    # result = cursor.fetchone()
 
     email = request.form.get('Email')
     password = request.form.get('Password')
@@ -71,7 +79,7 @@ def input():
                 street_name = request.form.get('buyerStName')
                 zip_code = request.form.get('buyerZip')
 
-                address_id = getAddress(zip_code, street_num, street_name)
+                address_id = getAddress(zip_code, street_num, street_name, connection)
                 if address_id is None:
                     print("Invalid address information")
                     connection.rollback()
@@ -89,7 +97,7 @@ def input():
                 routing_num = request.form.get('sellerRoutNum')
                 account_num = request.form.get('sellerAccNum')
 
-                address_id = getAddress(zip_code, street_num, street_name)
+                address_id = getAddress(zip_code, street_num, street_name, connection)
                 if address_id is None:
                     print("Invalid address information")
                     connection.rollback()
