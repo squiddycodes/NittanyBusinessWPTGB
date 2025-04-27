@@ -16,13 +16,6 @@ def place_order():
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
-
-    # Insert the order into the Orders table
-    cur.execute("""
-    INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Order_Date, Quantity, Payment)
-    VALUES (?, ?, ?, ?, ?, ?)
-        """, (seller_email, listing_id, buyer_email, order_date, order_quantity, payment))
-
     # Fetch product information based on the seller's email and listing ID
     cur.execute("""
         SELECT Product_Title, Product_Name, Product_Description, Product_Category, Product_Price, Quantity
@@ -30,20 +23,36 @@ def place_order():
         WHERE Seller_Email = ? AND Listing_ID = ?
     """, (seller_email, listing_id))
     product_data = cur.fetchone()
-    conn.close()
 
     # If the product is not found, return an error message
     if not product_data:
+        conn.close()
         return "Product not found."
 
     product_title, product_name, product_description, product_category, unit_price, available_qty = product_data
 
     # Check if the requested quantity is available
     if order_quantity > available_qty:
+        conn.close()
         return "Requested quantity exceeds available stock."
 
     # Calculate the payment (total cost) based on the quantity and unit price
     payment = unit_price * order_quantity
+
+    # Get the current date and time for the order
+    order_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Insert the order into the Orders table
+    cur.execute("""
+        INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Order_Date, Quantity, Payment)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (seller_email, listing_id, buyer_email, order_date, order_quantity, payment))
+
+    # Commit the transaction
+    conn.commit()
+
+    # Close the connection
+    conn.close()
 
     # Render the order confirmation page with the necessary details
     return render_template("orderconfirmation.html", 
@@ -57,7 +66,7 @@ def place_order():
                             product_description=product_description,
                             product_category=product_category,
                             unit_price=unit_price,
-                            available_qty=available_qty)  # All relevant details for confirmation
+                            available_qty=available_qty)
 
 @order_bp.route("/confirm_order", methods=["POST"])
 def confirm_order():
