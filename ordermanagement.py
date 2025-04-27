@@ -10,7 +10,7 @@ def place_order():
     buyer_email = request.form['email']       
     seller_email = request.form['seller_email']
     listing_id = request.form['listing_id']
-    order_quantity = int(request.form['QtyToBuy'])  # The quantity the buyer wants to purchase
+    order_quantity = float(request.form['QtyToBuy'])  # The quantity the buyer wants to purchase
 
     # Connect to the database
     conn = sql.connect('database.db')
