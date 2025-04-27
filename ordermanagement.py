@@ -36,27 +36,7 @@ def place_order():
         conn.close()
         return "Requested quantity exceeds available stock."
 
-    # Update quantity
-    new_quantity = available_qty  - order_quantity
-
-    # Check if the stock is depleted (quantity reaches 0)
-    if new_quantity == 0:
-        # Set the product status to 2 (out of stock)
-        cur.execute("""
-            UPDATE Product_Listings
-            SET Quantity = ?, Status = 2
-            WHERE Seller_Email = ? AND Listing_ID = ?
-        """, (new_quantity, seller_email, listing_id))
-    else:
-        # Just update the quantity
-        cur.execute("""
-            UPDATE Product_Listings
-            SET Quantity = ?
-            WHERE Seller_Email = ? AND Listing_ID = ?
-        """, (new_quantity, seller_email, listing_id))
-
-    conn.commit()
-
+   
 
     # Clean the unit_price by removing the dollar sign and converting it to a float
     unit_price = int(unit_price.replace('$', '').strip())
