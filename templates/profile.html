@@ -1,100 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>{{ email }}'s Profile - Nittany Business</title>
-    <style>
-        .button {
-            color: gray;
-            text-align: center;
-            border: none;
-            display: inline-block;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
 </head>
 <body>
-
-<div align="center" class="container-sm">
-    <div>
-        <h1>Edit Profile</h1>
-    </div>
-</div>
-
-<div class="container-sm">
-    <div>
-        <h2>Original Profile Details:</h2>
-
-        <div class="row mb-3">
-            <div class="col text-left">
-                <label for="oldBusinessName">Original Business Name: {{ user[0] }}</label>
-            </div>
-            <div class="col text-right">
-                <label for="oldStreet">Original Street: {{ user[1] }}</label>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col text-left">
-                <label for="oldCity">Original City: {{ user[2] }}</label>
-            </div>
-            <div class="col text-right">
-                <label for="oldState">Original State: {{ user[3] }}</label>
-            </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col text-left">
-                <label for="oldZipcode">Original Zipcode: {{ user[4] }}</label>
-            </div>
-        </div>
-    </div>
+    <h1>Your Profile</h1>
 
     <div>
-        <label for="EditingRules">Edit Profile Details Below (Please submit N/A for no change for that attribute)</label>
+        <strong>Email:</strong> {{ current_user.email }}
+    </div>
+    <div>
+        <strong>Name:</strong> {{ current_user.name }}
+    </div>
+    <div>
+        <strong>Address:</strong> {{ current_user.address }}
+    </div>
+    <div>
+        <strong>Phone Number:</strong> {{ current_user.phone }}
     </div>
 
-    <form id="update_profile" action="/UpdateProfile" method="POST">
-        <input type="hidden" name="email" value="{{ email }}">
-
-        <div class="form-group">
-            <label for="newBusinessName">New Business Name:</label>
-            <input type="text" id="newBusinessName" name="newBusinessName" class="form-control" placeholder="Leave blank to keep {{ user[0] }}">
-        </div>
-        <div class="form-group">
-            <label for="newStreet">New Street:</label>
-            <input type="text" id="newStreet" name="newStreet" class="form-control" placeholder="Leave blank to keep {{ user[1] }}">
-        </div>
-        <div class="form-group">
-            <label for="newCity">New City:</label>
-            <input type="text" id="newCity" name="newCity" class="form-control" placeholder="Leave blank to keep {{ user[2] }}">
-        </div>
-        <div class="form-group">
-            <label for="newState">New State:</label>
-            <input type="text" id="newState" name="newState" class="form-control" placeholder="Leave blank to keep {{ user[3] }}">
-        </div>
-        <div class="form-group">
-            <label for="newZipcode">New Zipcode:</label>
-            <input type="text" id="newZipcode" name="newZipcode" class="form-control" placeholder="Leave blank to keep {{ user[4] }}">
-        </div>
-        <div class="form-group">
-            <label for="newPassword">New Password (leave blank if no change):</label>
-            <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Enter new password">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit Changes</button>
-    </form>
-</div>
-
-<div class="mt-3">
-    <form action="/MyProfile" method="POST">
-        <input type="hidden" name="email" value="{{ email }}">
-        <button type="submit" class="btn btn-secondary">Return to Profile</button>
-    </form>
-</div>
-
+    <br>
+    <a href="{{ url_for('profile_bp.edit_profile', email=current_user.email) }}">Edit Profile</a>
+    <br>
+    <a href="{{ url_for('landingPage') }}">Back to Landing Page</a>
 </body>
 </html>
 
-    return render_template("profile.html", email=email, user=user_data)
 
