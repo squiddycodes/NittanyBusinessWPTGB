@@ -98,5 +98,71 @@
   </tbody>
 </table>
 </div>
+
+
+<!-- Modals -->
+<div class="modal fade" id="leaveRatingModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Leave a review!</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div class="mt-2">
+                <label for="rateNumber" style="font-weight: bold">Choose a rating from 1 to 5:</label> <br />
+            </div>
+            <div class="btn-group mt-2" role="group">
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(1)">1</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(2)">2</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(3)">3</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(4)">4</button>
+                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(5)">5</button>
+            </div>
+            <h6 class="mt-2" id="currentRating">No rating selected yet.</h6>
+
+            <div class="mt-5">
+                <form id="reviewForm" action="">
+                    <label for="reviewInput" style="font-weight: bold">How was your experience? (Max. 100 characters)</label> <br />
+                    <textarea id="reviewInput" maxlength="100" style="height: 200px; width: 400px" placeholder="Begin writing here..."></textarea>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- End Modals -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<!-- Managing review rating display upon selecting a value from 1-5 -->
+<script>
+    $(document).ready(function(){
+      {% if orderSubmitted %}
+        $('#leaveRatingModal').modal('show');
+      {% endif %}
+    });
+</script>
+<script>
+// Simple function to show selected rating
+function selectRating(n) {
+    document.getElementById('currentRating').innerText = "You selected: " + n;
+}
+</script>
+
 </body>
 </html>

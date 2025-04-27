@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, url_for, redirect
 import sqlite3 as sql
 from datetime import datetime
 
@@ -164,9 +164,4 @@ def confirm_order():
     print(seller_rating)
     connection.close()
 
-    return render_template("productpage.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating)
-
-
-
-
-
+    return render_template("productcatalogue.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating, orderSubmitted=True)

@@ -115,7 +115,6 @@ def input():
                 connection.execute('INSERT INTO Helpdesk (email, Position) VALUES (?,?)', (email, helpdesk_position+' - Not Approved'))
                 connection.commit()
 
-                # go back to home (could show a message indicating account needs to be approved)
                 return render_template('input.html', email=email, requestApproval=True)
 
     return render_template('input.html')
