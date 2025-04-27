@@ -25,7 +25,14 @@ def place_order():
         quantity
     ]
 
-    return render_template("productpage.html", email=seller_email, product=product)
+
+return render_template("orderconfirmation.html", 
+                           buyer_email=buyer_email,
+                           seller_email=seller_email,
+                           listing_id=listing_id,
+                           quantity=order_quantity,
+                           payment=payment)
+
 
 @order_bp.route("/confirm_order", methods=["POST"])
 def confirm_order():
@@ -84,13 +91,11 @@ def confirm_order():
     conn.commit()
     conn.close()
 
-    return render_template("orderconfirmation.html", 
-                           buyer_email=buyer_email,
-                           seller_email=seller_email,
-                           listing_id=listing_id,
-                           quantity=order_quantity,
-                           payment=payment)
 
+    return render_template("productpage.html", email=seller_email, product=product)
+
+
+    
 
 
 
