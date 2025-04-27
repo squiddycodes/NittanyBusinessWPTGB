@@ -16,6 +16,13 @@ def place_order():
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
+
+    # Insert the order into the Orders table
+    cur.execute("""
+    INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Order_Date, Quantity, Payment)
+    VALUES (?, ?, ?, ?, ?, ?)
+        """, (seller_email, listing_id, buyer_email, order_date, order_quantity, payment))
+
     # Fetch product information based on the seller's email and listing ID
     cur.execute("""
         SELECT Product_Title, Product_Name, Product_Description, Product_Category, Product_Price, Quantity
