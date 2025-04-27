@@ -39,24 +39,8 @@ def place_order():
     # Ensure unit_price is a float
     unit_price = float(unit_price)
 
-
     # Calculate the payment (total cost) based on the quantity and unit price
     payment = unit_price * order_quantity
-
-    # Get the current date and time for the order
-    order_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-    # Insert the order into the Orders table
-    cur.execute("""
-        INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Order_Date, Quantity, Payment)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (seller_email, listing_id, buyer_email, order_date, order_quantity, payment))
-
-    # Commit the transaction
-    conn.commit()
-
-    # Close the connection
-    conn.close()
 
     # Render the order confirmation page with the necessary details
     return render_template("orderconfirmation.html", 
@@ -72,13 +56,20 @@ def place_order():
                             unit_price=unit_price,
                             available_qty=available_qty)
 
+
 @order_bp.route("/confirm_order", methods=["POST"])
 def confirm_order():
+    # Extract order details from the form
     buyer_email = request.form['buyer_email']
     seller_email = request.form['seller_email']
     listing_id = request.form['listing_id']
     quantity_ordered = int(request.form['quantity'])
+    payment = float(request.form['payment'])
 
+    # Get the current date and time for the order
+    order_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    # Connect to the database
     conn = sql.connect('database.db')
     cur = conn.cursor()
 
@@ -108,6 +99,15 @@ def confirm_order():
     """, (new_quantity, seller_email, listing_id))
     conn.commit()
 
+    # Insert the order into the Orders table
+    cur.execute("""
+        INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Order_Date, Quantity, Payment)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (seller_email, listing_id, buyer_email, order_date, quantity_ordered, payment))
+
+    # Commit the transaction
+    conn.commit()
+
     # Fetch updated product info
     cur.execute("""
         SELECT Product_Title, Product_Name, Product_Description, Product_Category, Product_Price, Quantity
@@ -133,10 +133,6 @@ def confirm_order():
     ]
 
     return render_template("productpage.html", email=buyer_email, product=product, listing_id=listing_id)
-
-    
-
-
 
 
 
