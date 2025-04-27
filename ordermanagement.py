@@ -37,7 +37,7 @@ def place_order():
         return "Requested quantity exceeds available stock."
 
     # Update quantity
-    new_quantity = current_quantity - quantity_ordered
+    new_quantity = available_qty  - order_quantity
 
     # Check if the stock is depleted (quantity reaches 0)
     if new_quantity == 0:
