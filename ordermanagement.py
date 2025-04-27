@@ -44,6 +44,16 @@ def place_order():
     # Calculate the payment (total cost) based on the quantity and unit price
     payment = unit_price * order_quantity
 
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute(
+        'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+        (seller_email,))
+    seller_rating = cursor.fetchone()
+    print(seller_rating)
+    connection.close()
+
     # Render the order confirmation page with the necessary details
     return render_template("orderconfirmation.html", 
                             buyer_email=buyer_email,
@@ -56,7 +66,8 @@ def place_order():
                             product_description=product_description,
                             product_category=product_category,
                             unit_price=unit_price,
-                            available_qty=available_qty)
+                            available_qty=available_qty,
+                            seller_rating=seller_rating)
 
 
 @order_bp.route("/confirm_order", methods=["POST"])
