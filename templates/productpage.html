@@ -59,10 +59,13 @@
           <div class="col text-left">
             <label for = ProductQuantity>Product Quantity: {{ product[6] }}</label>
           </div>
+          <div class="col text-right">
+            <label for = ProductQuantity>Seller Rating: {{ seller_rating[0] }}</label>
+          </div>
         </div>
     </div>
 </div>
-
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
 <div class = "container-sm">
     <form id="update_product" action="/place_order" method="POST">
          <input type="hidden" name="email" value="{{ email }}"> <!-- allows for tracking the buyer by their email -->

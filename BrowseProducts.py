@@ -51,7 +51,14 @@ def browse_product(listing_id):
     product = cursor.fetchone()
     connection.close()
     #print("product", product)
-    return render_template("productPage.html", email=request.form['email'], product=product, listing_id = listing_id)
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute('SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)', (product[0],))
+    seller_rating = cursor.fetchone()
+    print(seller_rating)
+    connection.close()
+    return render_template("productPage.html", email=request.form['email'], product=product, listing_id = listing_id, seller_rating=seller_rating)
 
 @BrowseProducts_bp.route("/BrowseProducts/<string:currCategory>", methods=['GET', 'POST'])
 def browse_products(currCategory):

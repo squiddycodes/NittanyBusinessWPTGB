@@ -18,7 +18,7 @@ def place_order():
 
     # Fetch product information based on the seller's email and listing ID
     cur.execute("""
-        SELECT Product_Title, Product_Name, Product_Description, Product_Category, Product_Price, Quantity
+        SELECT Product_Title, Product_Name, Product_Description, Category, Product_Price, Quantity
         FROM Product_Listings
         WHERE Seller_Email = ? AND Listing_ID = ?
     """, (seller_email, listing_id))
@@ -94,7 +94,7 @@ def confirm_order():
 
     # Update quantity
     new_quantity = current_quantity - quantity_ordered
- if new_quantity == 0:
+    if new_quantity == 0:
         # If stock is now 0, set Status = 2
         cur.execute("""
             UPDATE Product_Listings
@@ -112,7 +112,7 @@ def confirm_order():
 
     # Insert the order into the Orders table
     cur.execute("""
-        INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Order_Date, Quantity, Payment)
+        INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Date, Quantity, Payment)
         VALUES (?, ?, ?, ?, ?, ?)
     """, (seller_email, listing_id, buyer_email, order_date, quantity_ordered, payment))
 
@@ -121,7 +121,7 @@ def confirm_order():
 
     # Fetch updated product info
     cur.execute("""
-        SELECT Product_Title, Product_Name, Product_Description, Product_Category, Product_Price, Quantity
+        SELECT Product_Title, Product_Name, Product_Description, Category, Product_Price, Quantity
         FROM Product_Listings
         WHERE Seller_Email = ? AND Listing_ID = ?
     """, (seller_email, listing_id))
@@ -143,7 +143,17 @@ def confirm_order():
         available_qty
     ]
 
-    return render_template("productpage.html", email=buyer_email, product=product, listing_id=listing_id)
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute(
+        'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+        (product[0],))
+    seller_rating = cursor.fetchone()
+    print(seller_rating)
+    connection.close()
+
+    return render_template("productpage.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating)
 
 
 
