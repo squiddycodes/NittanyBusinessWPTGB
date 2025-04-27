@@ -94,11 +94,20 @@ def confirm_order():
 
     # Update quantity
     new_quantity = current_quantity - quantity_ordered
-    cur.execute("""
-        UPDATE Product_Listings
-        SET Quantity = ?
-        WHERE Seller_Email = ? AND Listing_ID = ?
-    """, (new_quantity, seller_email, listing_id))
+ if new_quantity == 0:
+        # If stock is now 0, set Status = 2
+        cur.execute("""
+            UPDATE Product_Listings
+            SET Quantity = ?, Status = 2
+            WHERE Seller_Email = ? AND Listing_ID = ?
+        """, (new_quantity, seller_email, listing_id))
+    else:
+        # Otherwise, just update Quantity
+        cur.execute("""
+            UPDATE Product_Listings
+            SET Quantity = ?
+            WHERE Seller_Email = ? AND Listing_ID = ?
+        """, (new_quantity, seller_email, listing_id))
     conn.commit()
 
     # Insert the order into the Orders table
