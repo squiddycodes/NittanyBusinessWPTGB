@@ -32,11 +32,7 @@
 </head>
 <body>
 
-<div align="center" class="container-sm">
-    <div>
-        <h1>Staff Recruitment: HelpDesk</h1>
-    </div>
-</div>
+<h1 align="center">Staff Recruitment: HelpDesk</h1>
 
 <div class="container-sm">
     <h2>Request Details:</h2>
@@ -50,7 +46,7 @@
     <label for="requestID" class="d-block mb-2 fs-5">
         Request ID: {{ request_id }}
     </label>
-
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
     <form action="/ApproveAccount" method="POST">
         <input type = "hidden" name = "email" value = "{{ email }}">
         <input type = "hidden" name = "userID" value = "{{ UserRequests[0] }}">
@@ -61,7 +57,7 @@
 
     <form action="/ReturntoRequests" method="POST">
         <input type = "hidden" name = "email" value = "{{ email }}">
-        <button type="submit" class="btn btn-primary">Return to Requests</button>
+        <button type="submit" class="btn btn-secondary">Return to Requests</button>
     </form>
 
 

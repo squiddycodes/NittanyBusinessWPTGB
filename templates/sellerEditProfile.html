@@ -22,6 +22,7 @@
         <h1>Edit Profile</h1>
     </div>
 </div>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
 <div class="container-sm">
     <div>
@@ -69,9 +70,9 @@
             </div>
         </div>
     </div>
-
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
     <div>
-        <label for="EditingRules">Edit Profile Details Below</label>
+        <h2>Edit Profile Details Below</h2>
     </div>
 
     <form id="update_profile" action="/UpdateSellerProfile" method="POST">
@@ -112,14 +113,14 @@
             <label for="newZipcode">New Zipcode (This will update your city and state based on the zipcode:</label>
             <input type="text" id="newZipcode" name="newZipcode" class="form-control" placeholder="Leave blank to keep {{ seller_address[0] }}">
         </div>
-
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
         <button type="submit" class="btn btn-primary">Submit Changes</button>
     </form>
     <br>
     <form action="/SellersHomePage" method="POST">
     <!-- Sends users back to their respective homepage -->
     <input type = "hidden" name = "email" value = "{{ email }}">
-    <button type="submit" class="btn btn-primary">Return to Profile</button>
+    <button type="submit" class="btn btn-secondary">Return to Profile</button>
     </form>
 </div>
 <br>

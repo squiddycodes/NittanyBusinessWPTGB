@@ -22,6 +22,7 @@
         <h1>Edit Profile</h1>
     </div>
 </div>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
 <div class="container-sm">
     <div>
@@ -56,9 +57,9 @@
             </div>
         </div>
     </div>
-
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
     <div>
-        <label for="EditingRules">Edit Profile Details Below</label>
+        <h2>Edit Profile Details Below</h2>
     </div>
 
     <form id="update_profile" action="/UpdateBuyerProfile" method="POST">
@@ -91,9 +92,10 @@
             <label for="newZipcode">New Zipcode (This will update your city and state based on the zipcode:</label>
             <input type="text" id="newZipcode" name="newZipcode" class="form-control" placeholder="Leave blank to keep {{ buyer_address[0] }}">
         </div>
-
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
         <button type="submit" class="btn btn-primary">Submit Changes</button>
     </form>
+
 
     <div class="mt-3">
     <form action="/BuyersHomePage" method="POST">
@@ -101,6 +103,8 @@
         <button type="submit" class="btn btn-secondary">Return to HomePage</button>
     </form>
     </div>
+    <br>
+    <br>
 </div>
 
 

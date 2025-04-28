@@ -21,6 +21,7 @@
 <!-- Add Logic -->
     <div class="card-body">
         <h1 align="center">Welcome to Nittany Business!</h1><!-- Main heading -->
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
         <h2 class="card-title">Create Account</h2>
 
         <form id="addForm" action="/CreateAccount" method="POST"> <!-- Form ID addForm called later by modal -->
@@ -45,6 +46,7 @@
                     <option value="helpdesk">HelpDesk</option>
                 </select>
             </div>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
             <div id="buyerFields" class="form-group" >
                 <h3>Buyer Information</h3>
@@ -123,6 +125,7 @@
                     showInputs();
                 };
             </script>
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <button type="submit" class="btn btn-primary">CREATE ACCOUNT</button>
             <a class="btn btn-success" href="/Login" role="button">BACK TO LOG IN</a> <!-- Routes to home page -->
         </form>

@@ -16,8 +16,8 @@
     </style><!-- Changing button style-->
 </head>
 <body>
-<h1>Welcome {{ email }} - Please Enter the New Product Info Below</h1>
-
+<h1 align="center">Product Registration</h1>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
 <div class="container-sm">
     <form id="new_product" action="/AddNewProduct" method="POST">
         <input type="hidden" name="email" value="{{ email }}">
@@ -46,19 +46,19 @@
             <input type="text" id="newProdPrice" name="newProdPrice" required class="form-control">
         </div>
         <div class="form-group">
-            <label for = newProdStatus>New Product Status:</label>
+            <label for = newProdStatus>New Product Status (0=Hidden from Catalogue, 1=In stock, 2=Out of Stock):</label>
             <input type="text" id="newProdStatus" name="newProdStatus" required class="form-control">
         </div>
-
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
         <button type="submit" class="btn btn-primary">Submit Changes</button>
     </form>
-</div>
-<div>
+    <br>
     <form action="/SellerHomePage" method="POST">
         <!-- Sends users back to their respective homepage -->
         <input type = "hidden" name = "email" value = "{{ email }}">
         <button type="submit" class="btn btn-primary">Return to HomePage</button>
     </form>
+    <br>
 </div>
 </body>
 </html>
