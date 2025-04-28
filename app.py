@@ -10,6 +10,7 @@ from registration import registration_bp
 from BrowseProducts import BrowseProducts_bp
 from products import products_bp
 from ordermanagement import order_bp
+from buyerProfile import editBuyerprofile_bp
 
 from werkzeug.serving import connection_dropped_errors
 
@@ -278,6 +279,7 @@ app.register_blueprint(BrowseProducts_bp)
 app.register_blueprint(products_bp)
 
 app.register_blueprint(order_bp)
+app.register_blueprint(editBuyerprofile_bp)
 @app.route('/')
 def index():
     return render_template('index.html', loginFailed=False)
