@@ -125,65 +125,12 @@
             </script>
             <button type="submit" class="btn btn-primary">CREATE ACCOUNT</button>
             <a class="btn btn-success" href="/Login" role="button">BACK TO LOG IN</a> <!-- Routes to home page -->
-
-
-
-
-            <a class="btn btn-success" href="/MakeReview" role="button">MAKE A REVIEW</a>
-
-
-
-
-
-
         </form>
     </div>
 </div>
 <!-- End Add Logic -->
 
 <!-- Modals -->
-<div class="modal fade" id="leaveRatingModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Leave a review!</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-
-        <div class="modal-body">
-            <div class="mt-2">
-                <label for="rateNumber" style="font-weight: bold">Choose a rating from 1 to 5:</label> <br />
-            </div>
-            <div class="btn-group mt-2" role="group">
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(1)">1</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(2)">2</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(3)">3</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(4)">4</button>
-                <button id="rateNumber" type="button" style="margin-right:16px" class="btn btn-outline-primary" onclick="selectRating(5)">5</button>
-            </div>
-            <h6 class="mt-2" id="currentRating">No rating selected yet.</h6>
-
-            <div class="mt-5">
-                <form id="reviewForm" action="">
-                    <label for="reviewInput" style="font-weight: bold">How was your experience? (Max. 100 characters)</label> <br />
-                    <input id="reviewInput" maxlength="100" type="text" style="height: 200px; width: 400px" placeholder="Begin writing here...">
-                </form>
-            </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </div>
-    </div>
-</div>
-
-
-
-
-
-
 <div class="modal fade" id="passNotMatchModal" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -283,30 +230,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-
-
-
-
-
-<script>
-    $(document).ready(function(){
-      {% if orderSubmitted %}
-        $('#leaveRatingModal').modal('show');
-      {% endif %}
-    });
-</script>
-<script>
-// Simple function to show selected rating
-function selectRating(n) {
-    document.getElementById('currentRating').innerText = "You selected: " + n;
-}
-</script>
-
-
-
-
-
-
 
 <script>
     $(document).ready(function(){
