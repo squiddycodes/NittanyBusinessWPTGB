@@ -8,9 +8,10 @@ def reviews():
     rating = request.form.get('rateNumber')
     review = request.form.get('reviewInput')
     order = request.form.get('order_id')
+    email = request.form.get('buyer_email')
 
     connection = sql.connect('database.db')
     connection.execute('INSERT INTO Reviews (Order_ID, Rate, Review_Desc) VALUES (?, ?, ?)', (order, rating, review))
     connection.commit()
 
-    return redirect(url_for('BrowseProducts.browse_products', currCategory="Root", email=request.form.get('email'), keyword="", keywordInput=""))
+    return redirect(url_for('BrowseProducts.browse_products', currCategory="Root", email=email, keyword="", keywordInput=""))

@@ -127,6 +127,7 @@
                 </div>
                 <h6 class="mt-2" id="currentRating">No rating selected yet.</h6>
                 <input type="hidden" name="rateNumber" id="rateNumber" value="">
+                <input type="hidden" name="buyer_email" value={{ buyer_email }}>
                 <input type="hidden" name="order_id" value="{{ order_id }}">
 
                 <div class="mt-5">
@@ -136,6 +137,7 @@
             </div>
 
             <div class="modal-footer">
+                    <input type="hidden" name="buyer_email" value={{ buyer_email }}>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="redirectCatalogue()">Dismiss</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
             </div>
