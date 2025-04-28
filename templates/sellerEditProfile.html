@@ -33,12 +33,12 @@
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="oldUserID">Original Bank Account Number: {{ seller_data[3] }}</label>
+                <label for="oldRtingNum">Original Bank Account Number: {{ seller_data[3] }}</label>
             </div>
         </div>
         <div class="row mb-3">
             <div class="col text-left">
-                <label for="oldUserID">Original Bank Routing Number: {{ seller_data[2] }}</label>
+                <label for="oldAcctNum">Original Bank Routing Number: {{ seller_data[2] }}</label>
             </div>
         </div>
         <div class="row mb-3">
@@ -81,6 +81,10 @@
             <input type="text" id="newUserID" name="newUserID" class="form-control" placeholder="Leave blank to keep {{ email }}">
         </div>
         <div class="form-group">
+            <label for="verifyCurrPW">Enter Old Password:</label>
+            <input type="text" id="verifyCurrPW" name="verifyCurrPW" required class="form-control">
+        </div>
+        <div class="form-group">
             <label for="newPassword">New Password:</label>
             <input type="text" id="newPassword" name="newPassword" class="form-control" placeholder="Leave blank to keep original password">
         </div>
@@ -94,7 +98,7 @@
         </div>
         <div class="form-group">
             <label for="newBusinessName">New Business Name:</label>
-            <input type="text" id="newBusinessName" name="newBusinessName" class="form-control" placeholder="Leave blank to keep {{ seller_data[0] }}">
+            <input type="text" id="newBusinessName" name="newBusinessName" class="form-control" placeholder="Leave blank to keep {{ seller_data[1] }}">
         </div>
         <div class="form-group">
             <label for="newStreetName">New Street Name:</label>
@@ -119,7 +123,56 @@
     </form>
 </div>
 <br>
+<div class="modal fade" id="invalidZipcode" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Zipcode not found in database</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Unfortunately, the zipcode you entered is not supported by Nittany Business. Please enter a valid zipcode that we can deliver to.</p>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="incorrectCurrPW" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Incorrect Current Password</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>Incorrect current password. Please enter your current password to administer these changes.</p>
+        </div>
+      </div>
+    </div>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function(){
+      {% if invalidZipcode %}
+        $('#invalidZipcode').modal('show');
+      {% endif %}
+    });
+</script>
+<script>
+    $(document).ready(function(){
+      {% if incorrectCurrPW %}
+        $('#incorrectCurrPW').modal('show');
+      {% endif %}
+    });
+</script>
 </body>
 </html>
 
