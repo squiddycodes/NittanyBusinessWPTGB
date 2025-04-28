@@ -1,13 +1,15 @@
 from flask import Blueprint, request, render_template, url_for, redirect
 import sqlite3 as sql
+import random
 from datetime import datetime
-
+import os
+import pandas as pd
 order_bp = Blueprint("order", __name__, template_folder='templates')
 
 @order_bp.route("/place_order", methods=["POST"])
 def place_order():
     # Extract buyer and seller information from the form
-    buyer_email = request.form['email']       
+    buyer_email = request.form['email']
     seller_email = request.form['seller_email']
     listing_id = request.form['listing_id']
     order_quantity = int(request.form['QtyToBuy'])  # The quantity the buyer wants to purchase
@@ -32,7 +34,7 @@ def place_order():
 
 
     if not seller_rating or seller_rating[0] is None:
-        seller_rating = (0.0,)  
+        seller_rating = (0.0,)
 
     # If the product is not found, return an error message
     if not product_data:
@@ -63,7 +65,7 @@ def place_order():
     connection.close()
 
     # Render the order confirmation page with the necessary details
-    return render_template("orderconfirmation.html", 
+    return render_template("orderconfirmation.html",
                             buyer_email=buyer_email,
                             seller_email=seller_email,
                             listing_id=listing_id,
@@ -130,10 +132,18 @@ def confirm_order():
     conn.commit()
 
     # Insert the order into the Orders table
+    review_path = os.path.join('NittanyBusinessDataset_v3', 'Reviews.csv')
+    review_data = pd.read_csv(review_path)
+    existing_orders = set(review_data['Order_ID'])
+    while True:
+        order_id = random.randint(1, 9999)
+        if order_id not in existing_orders:
+            break
+
     cur.execute("""
-        INSERT INTO Orders (Seller_Email, Listing_ID, Buyer_Email, Date, Quantity, Payment)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, (seller_email, listing_id, buyer_email, order_date, quantity_ordered, payment))
+        INSERT INTO Orders (Order_ID, Seller_Email, Listing_ID, Buyer_Email, Date, Quantity, Payment)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (order_id, seller_email, listing_id, buyer_email, order_date, quantity_ordered, payment))
 
     # Commit the transaction
     conn.commit()
@@ -166,12 +176,12 @@ def confirm_order():
     cursor = connection.cursor()
 
     cursor.execute(
-        'SELECT AVG(Rate) FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
-        (seller_email,))
-    seller_rating = cursor.fetchone()[0]
-    print("SELLER RATING:",seller_rating, "Seller email:", seller_email)
+        'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+        (product[0],))
+    seller_rating = cursor.fetchone()
+
     if not seller_rating or seller_rating[0] is None:
-        seller_rating = (0.0,) 
+        seller_rating = (0.0,)
     print(seller_rating)
     connection.close()
 
@@ -188,4 +198,5 @@ def confirm_order():
                            unit_price=unit_price,
                            available_qty=available_qty,
                            seller_rating=seller_rating,
+                           order_id = order_id,
                            orderSubmitted=True)
