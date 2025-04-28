@@ -86,7 +86,7 @@ def confirm_order():
     listing_id = request.form['listing_id']
     quantity_ordered = int(request.form['quantity'])
     payment = float(request.form['payment'])
-
+    print(buyer_email, seller_email, listing_id, quantity_ordered, payment)
     # Get the current date and time for the order
     order_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -151,7 +151,7 @@ def confirm_order():
         return "Error fetching updated product."
 
     product_title, product_name, product_description, product_category, unit_price, available_qty = updated_product
-
+    unit_price = unit_price.replace("$","")
     product = [
         seller_email,
         product_title,
@@ -175,4 +175,17 @@ def confirm_order():
     print(seller_rating)
     connection.close()
 
-    return render_template("orderconfirmation.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating, orderSubmitted=True)
+    return render_template("orderconfirmation.html",
+                           buyer_email=buyer_email,
+                           seller_email=seller_email,
+                           listing_id=listing_id,
+                           quantity=quantity_ordered,
+                           payment=payment,
+                           product_title=product_title,
+                           product_name=product_name,
+                           product_description=product_description,
+                           product_category=product_category,
+                           unit_price=unit_price,
+                           available_qty=available_qty,
+                           seller_rating=seller_rating,
+                           orderSubmitted=True)
