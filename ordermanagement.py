@@ -166,10 +166,10 @@ def confirm_order():
     cursor = connection.cursor()
 
     cursor.execute(
-        'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
-        (product[0],))
-    seller_rating = cursor.fetchone()
-
+        'SELECT AVG(Rate) FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+        (seller_email,))
+    seller_rating = cursor.fetchone()[0]
+    print("SELLER RATING:",seller_rating, "Seller email:", seller_email)
     if not seller_rating or seller_rating[0] is None:
         seller_rating = (0.0,) 
     print(seller_rating)
