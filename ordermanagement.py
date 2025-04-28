@@ -29,6 +29,11 @@ def place_order():
         (product_data[0],))
     seller_rating = cur.fetchone()
 
+
+
+    if not seller_rating or seller_rating[0] is None:
+        seller_rating = (0.0,)  
+
     # If the product is not found, return an error message
     if not product_data:
         conn.close()
@@ -164,6 +169,9 @@ def confirm_order():
         'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
         (product[0],))
     seller_rating = cursor.fetchone()
+
+    if not seller_rating or seller_rating[0] is None:
+        seller_rating = (0.0,) 
     print(seller_rating)
     connection.close()
 
