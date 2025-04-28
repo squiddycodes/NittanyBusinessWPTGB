@@ -175,13 +175,13 @@ def reviewrequests():
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE helpdesk_staff_email = ? AND request_type != ?',
-        (email, 'ChangeID',))
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE request_status != 1 AND helpdesk_staff_email = ? AND request_type != ?',
+        (email, 'HelpDeskRegistration',))
     nonUserRequests = cursor.fetchall()
 
     cursor.execute(
-        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE helpdesk_staff_email = ? AND request_type == ?',
-        (email, 'ChangeID',))
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE request_status != 1 AND helpdesk_staff_email = ? AND request_type == ?',
+        (email, 'HelpDeskRegistration',))
     UserRequests = cursor.fetchall()
     connection.close()
 
@@ -206,3 +206,53 @@ def reviewUserrequest(request_id):
 def returntoHelpDesk():
     email = request.form['email']
     return render_template('helpdeskLandingPage.html', email = email)
+
+@products_bp.route("/ApproveAccount", methods = ['POST', 'GET'])
+def approveRequest():
+    email = request.form['email']
+    print(email)
+    sender_email = request.form['userID']
+    print(sender_email)
+    request_id = request.form['requestID']
+    print(request_id)
+    requestMsg = request.form['requestMsg']
+    print(requestMsg)
+    requestPos = requestMsg.split(":")[1]
+    print(requestPos)
+
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute('UPDATE HelpDesk SET Position = ? WHERE email = ?', (requestPos, sender_email,))
+    connection.commit()
+
+    cursor.execute('UPDATE Requests SET request_status = 1 WHERE request_id = ?', (request_id,))
+    connection.commit()
+
+    cursor.execute(
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE request_status != 1 AND helpdesk_staff_email = ? AND request_type != ?',
+        (email, 'HelpDeskRegistration',))
+    nonUserRequests = cursor.fetchall()
+
+    cursor.execute(
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE request_status != 1 AND helpdesk_staff_email = ? AND request_type == ?',
+        (email, 'HelpDeskRegistration',))
+    UserRequests = cursor.fetchall()
+    connection.close()
+    return render_template('reviewrequests.html', email=email, nonUserRequests=nonUserRequests, UserRequests=UserRequests)
+
+@products_bp.route("/ReturntoRequests", methods = ['POST', 'GET'])
+def returntoRequests():
+    email = request.form['email']
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+    cursor.execute(
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE request_status != 1 AND helpdesk_staff_email = ? AND request_type != ?',
+        (email, 'HelpDeskRegistration',))
+    nonUserRequests = cursor.fetchall()
+
+    cursor.execute(
+        'SELECT request_id, sender_email, request_type, request_desc FROM Requests WHERE request_status != 1 AND helpdesk_staff_email = ? AND request_type == ?',
+        (email, 'HelpDeskRegistration',))
+    UserRequests = cursor.fetchall()
+    connection.close()
+    return render_template('reviewrequests.html', email = email, nonUserRequests = nonUserRequests, UserRequests=UserRequests)

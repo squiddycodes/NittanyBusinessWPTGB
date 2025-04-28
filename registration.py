@@ -112,7 +112,7 @@ def input():
             elif account_type == 'helpdesk':
                 helpdesk_position = request.form.get('helpPosition')
                 UserIDHelpDesk = 'u0fvl3dj@nittybiz.com'
-                NewIDRequest = "Please create my helpdesk staff account - position:" + helpdesk_position
+                NewIDRequest = "Please create my helpdesk staff account - position: " + helpdesk_position
                 new_id = random.randint(1, 600)
                 unique = False
 
