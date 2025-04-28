@@ -167,4 +167,4 @@ def confirm_order():
     print(seller_rating)
     connection.close()
 
-    return render_template("orderconfirmation.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating, orderSubmitted=True)
+return render_template("orderconfirmation.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating, orderSubmitted=True, curr_category=curr_category)
