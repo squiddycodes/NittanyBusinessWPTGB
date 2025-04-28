@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>{{ email }}'s Profile - Nittany Business</title>
+    <style>
+        .button {
+            color: gray;
+            text-align: center;
+            border: none;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+<div align="center" class="container-sm">
+    <div>
+        <h1>Edit Profile</h1>
+    </div>
+</div>
+
+<div class="container-sm">
+    <div>
+        <h2>Original Profile Details:</h2>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="oldUserID">Original User ID: {{ email }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="oldUserID">Original Bank Account Number: {{ seller_data[3] }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="oldUserID">Original Bank Routing Number: {{ seller_data[2] }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="oldBusinessName">Original Business Name: {{ seller_data[1] }}</label>
+            </div>
+
+
+
+            <div class="col text-right">
+                <label for="oldZipcode">Original Zipcode: {{ seller_address[0] }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="oldCity">Original City: {{ seller_location[0] }}</label>
+            </div>
+            <div class="col text-right">
+                <label for="oldState">Original State: {{ seller_location[1] }}</label>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col text-left">
+                <label for="oldStreet">Original Street Name: {{ seller_address[1] }}</label>
+            </div>
+            <div class="col text-right">
+                <label for="oldStreetNum">Original Street Number: {{ seller_address[2] }}</label>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <label for="EditingRules">Edit Profile Details Below</label>
+    </div>
+
+    <form id="update_profile" action="/UpdateSellerProfile" method="POST">
+        <input type="hidden" name="email" value="{{ email }}">
+        <div class="form-group">
+            <label for="newUserID">New User ID (This will not be updated unless approved by HelpDesk):</label>
+            <input type="text" id="newUserID" name="newUserID" class="form-control" placeholder="Leave blank to keep {{ email }}">
+        </div>
+        <div class="form-group">
+            <label for="newPassword">New Password:</label>
+            <input type="text" id="newPassword" name="newPassword" class="form-control" placeholder="Leave blank to keep original password">
+        </div>
+        <div class="form-group">
+            <label for="newBankAccountNumber">New Bank Account Number:</label>
+            <input type="text" id="newBankAccountNumber" name="newBankAccountNumber" class="form-control" placeholder="Leave blank to keep {{ seller_data[3] }}">
+        </div>
+        <div class="form-group">
+            <label for="newBankRoutingNumber">New Bank Routing Number:</label>
+            <input type="text" id="newBankRoutingNumber" name="newBankRoutingNumber" class="form-control" placeholder="Leave blank to keep {{ seller_data[2] }}">
+        </div>
+        <div class="form-group">
+            <label for="newBusinessName">New Business Name:</label>
+            <input type="text" id="newBusinessName" name="newBusinessName" class="form-control" placeholder="Leave blank to keep {{ seller_data[0] }}">
+        </div>
+        <div class="form-group">
+            <label for="newStreetName">New Street Name:</label>
+            <input type="text" id="newStreetName" name="newStreetName" class="form-control" placeholder="Leave blank to keep {{ seller_address[1] }}">
+        </div>
+        <div class="form-group">
+            <label for="newStreetNum">New Street Number:</label>
+            <input type="text" id="newStreetNum" name="newStreetNum" class="form-control" placeholder="Leave blank to keep {{ seller_address[2] }}">
+        </div>
+        <div class="form-group">
+            <label for="newZipcode">New Zipcode (This will update your city and state based on the zipcode:</label>
+            <input type="text" id="newZipcode" name="newZipcode" class="form-control" placeholder="Leave blank to keep {{ seller_address[0] }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Changes</button>
+    </form>
+    <br>
+    <form action="/SellersHomePage" method="POST">
+    <!-- Sends users back to their respective homepage -->
+    <input type = "hidden" name = "email" value = "{{ email }}">
+    <button type="submit" class="btn btn-primary">Return to Profile</button>
+    </form>
+</div>
+<br>
+
+</body>
+</html>
+
