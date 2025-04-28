@@ -16,16 +16,15 @@
     </style><!-- Changing button style-->
 </head>
 <body>
-<div align="center" class="container-sm">
-<div>
-    <h1 align = center>Product Page</h1>
-</div>
-    <form action="/BrowseProducts" method="POST">
-        <!-- Sends users back to their respective homepage -->
-        <input type = "hidden" name = "email" value = "{{ email }}">
-        <button type="submit" class="btn btn-primary">Return to Products</button>
-    </form>
-</div>
+<h1 align = center>Product Page</h1>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+<form action="/BrowseProducts" method="POST">
+    <!-- Sends users back to their respective homepage -->
+    <input type = "hidden" name = "email" value = "{{ email }}">
+    <div align="center">
+    <button type="submit" class="btn btn-primary">Return to Products</button>
+    </div>
+</form>
 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 <div class="container-sm">
     <div>
