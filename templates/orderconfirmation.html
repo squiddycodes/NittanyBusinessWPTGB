@@ -138,7 +138,7 @@
 
             <div class="modal-footer">
                     <input type="hidden" name="buyer_email" value={{ buyer_email }}>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="redirectCatalogue()">Dismiss</button>
+                    <a id="dismissButton" class="btn btn-primary" href="{{ url_for("BrowseProducts.browse_products", currCategory="Root", email=buyer_email, keyword="", keywordInput="") }}">Dismiss</a>
                     <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>
@@ -172,10 +172,6 @@ function selectRating(n) {
     document.getElementById('rateNumber').value = n;
 }
 
-function redirectCatalogue(){
-    window.location.href = '{{ url_for("BrowseProducts.browse_products", currCategory="Root", email=request.form.get("email"), keyword="", keywordInput="") }}';
-
-}
 </script>
 
 </body>
