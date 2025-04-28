@@ -71,8 +71,14 @@
             {% for request_id, sender_email, request_type, request_desc in UserRequests %}
             <tr>
               <td>
+                  <form id="goToRequest{{ request_id }}" method="POST" style="display:inline-block;" action="{{ url_for('products.reviewUserrequest', request_id=request_id) }}">
                   <input type="hidden" name="email" value="{{ email }}">
-                  <a href="/ReviewRequests/{{ UserRequests[0] }}">{{ request_id }}</a>
+                      <a href="{{ request_id }}"
+                         onclick="
+                           var f = document.getElementById('goToRequest{{ request_id }}');f.submit();return false;">{{ request_id }}
+                      </a>
+                  </form>
+
               </td>
               <td>{{ sender_email }}</td>
               <td>{{ request_type }}</td>

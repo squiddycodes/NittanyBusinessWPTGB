@@ -189,16 +189,18 @@ def reviewrequests():
 
 @products_bp.route("/ReviewRequests/<int:request_id>", methods = ['POST', 'GET'])
 def reviewUserrequest(request_id):
-    print("Hi", request_id)
-    email = request.form['email']
+    email = ""
+    if request.method == 'GET':
+        email = request.args.get('email')
+    elif request.method == 'POST':
+        email = request.form['email']
 
     connection = sql.connect('database.db')
     cursor = connection.cursor()
-    print("we here")
-    cursor.execute('SELECT sender_email, request_type, request_desc FROM Requests WHERE request_id = ?', (request_id,))
-    UserRequest = cursor.fetchall()
 
-    return render_template('approveUserIDs.html', email=email, request_id=request_id, UserRequests=UserRequest)
+    cursor.execute('SELECT sender_email, request_type, request_desc FROM Requests WHERE request_id = ?', (request_id,))
+    UserRequest = cursor.fetchone()
+    return render_template('approveAccountCreate.html', email=email, request_id=request_id, UserRequests=UserRequest)
 
 @products_bp.route("/ReturntoHelpDesk", methods = ['POST', 'GET'])
 def returntoHelpDesk():
