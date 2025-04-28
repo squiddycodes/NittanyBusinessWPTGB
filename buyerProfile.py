@@ -143,25 +143,25 @@ def updateBuyerProfile():
     cur.execute("UPDATE Address SET zipcode = ?, street_name = ?, street_num = ? WHERE address_id = ?", (newZipcode, newStreetName, newStreetNum, buyer_data[1],))
     conn.commit()
     conn.close()
+    if newUserID != email:
+        UserIDHelpDesk = 'u0fvl3dj@nittybiz.com'
+        NewIDRequest = "Please change my name to " + newUserID
+        new_id = random.randint(1, 600)
+        unique = False
 
-    UserIDHelpDesk = 'u0fvl3dj@nittybiz.com'
-    NewIDRequest = "Please change my name to " + newUserID
-    new_id = random.randint(1, 600)
-    unique = False
+        conn = sql.connect("database.db")
+        cur = conn.cursor()
+        while not unique:
+            matching_listid = cur.execute('SELECT COUNT(*) as rows FROM Requests WHERE request_id = ?', (new_id,))
 
-    conn = sql.connect("database.db")
-    cur = conn.cursor()
-    while not unique:
-        matching_listid = cur.execute('SELECT COUNT(*) as rows FROM Requests WHERE request_id = ?', (new_id,))
-
-        if matching_listid.fetchone()[0] <= 0:
-            unique = True
-        else:
-            new_id = random.randint(1, 600)
+            if matching_listid.fetchone()[0] <= 0:
+                unique = True
+            else:
+                new_id = random.randint(1, 600)
 
 
-    cur.execute("INSERT INTO Requests (request_id, sender_email, helpdesk_staff_email, request_type, request_desc, request_status) VALUES (?,?,?,?,?,?)", (new_id, email, UserIDHelpDesk, 'ChangeID', NewIDRequest, '0',))
-    conn.commit()
-    conn.close()
+        cur.execute("INSERT INTO Requests (request_id, sender_email, helpdesk_staff_email, request_type, request_desc, request_status) VALUES (?,?,?,?,?,?)", (new_id, email, UserIDHelpDesk, 'ChangeID', NewIDRequest, '0',))
+        conn.commit()
+        conn.close()
 
     return render_template('buyersLandingPage.html', email=email)
