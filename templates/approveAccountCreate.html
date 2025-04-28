@@ -7,30 +7,64 @@
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>{{ email }}'s Profile - Nittany Business</title>
     <style>
-        .button {
-            color: gray;
-            text-align: center;
-            border: none;
-            display: inline-block;
-        }
-    </style>
+    .btn {
+        color: white;
+	text-align: center;
+        border: none;
+	display: inline-block;
+        margin: 4px 2px;
+    }
+
+    #dropdown {
+        width: 200px;
+    }
+
+    div {
+        padding: 10px;
+        border: 5px solid gray;
+        margin: 0;
+    }
+
+    body {
+        color:#444;line-height:1.6
+    }
+    </style><!-- Changing button style-->
 </head>
 <body>
 
 <div align="center" class="container-sm">
     <div>
-        <h1>Edit Profile</h1>
+        <h1>Staff Recruitment: HelpDesk</h1>
     </div>
 </div>
 
 <div class="container-sm">
-    <h2>User ID Request Details:</h2>
-    <div class="col text-left">
-        <label for="serID">User ID: {{ UserRequests[0] }}</label>
-    </div>
-    <div class="col text-right">
-        <label for="RequestID">Request ID: {{ request_id }}</label>
-    </div>
+    <h2>Request Details:</h2>
+
+    <label for="userID" class="d-block mb-2 fs-5">
+        User ID: {{ UserRequests[0] }}
+    </label>
+    <label for="requestMsg" class="d-block mb-2 fs-5">
+        Request Message: {{ UserRequests[2] }}
+    </label>
+    <label for="requestID" class="d-block mb-2 fs-5">
+        Request ID: {{ request_id }}
+    </label>
+
+    <form action="/ApproveAccount" method="POST">
+        <input type = "hidden" name = "email" value = "{{ email }}">
+        <input type = "hidden" name = "userID" value = "{{ UserRequests[0] }}">
+        <input type = "hidden" name = "requestID" value = "{{ request_id }}">
+        <input type = "hidden" name = "requestMsg" value = "{{ UserRequests[2] }}">
+        <button type="submit" class="btn btn-primary">Approve Request</button>
+    </form>
+
+    <form action="/ReturntoRequests" method="POST">
+        <input type = "hidden" name = "email" value = "{{ email }}">
+        <button type="submit" class="btn btn-primary">Return to Requests</button>
+    </form>
+
+
 </div>
 </body>
-</html>h
+</html>
