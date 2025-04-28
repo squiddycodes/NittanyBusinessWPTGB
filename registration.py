@@ -111,8 +111,24 @@ def input():
 
             elif account_type == 'helpdesk':
                 helpdesk_position = request.form.get('helpPosition')
+                UserIDHelpDesk = 'u0fvl3dj@nittybiz.com'
+                NewIDRequest = "Please create my helpdesk staff account - position:" + helpdesk_position
+                new_id = random.randint(1, 600)
+                unique = False
+
+                cur = connection.cursor()
+                while not unique:
+                    matching_listid = cur.execute('SELECT COUNT(*) as rows FROM Requests WHERE request_id = ?',
+                                                  (new_id,))
+
+                    if matching_listid.fetchone()[0] <= 0:
+                        unique = True
+                    else:
+                        new_id = random.randint(1, 600)
+
 
                 connection.execute('INSERT INTO Helpdesk (email, Position) VALUES (?,?)', (email, helpdesk_position+' - Not Approved'))
+                cur.execute("INSERT INTO Requests (request_id, sender_email, helpdesk_staff_email, request_type, request_desc, request_status) VALUES (?,?,?,?,?,?)", (new_id, email, UserIDHelpDesk, 'HelpDeskRegistration', NewIDRequest, '0',))
                 connection.commit()
 
                 return render_template('input.html', email=email, requestApproval=True)
