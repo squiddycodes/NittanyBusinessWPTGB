@@ -81,7 +81,7 @@ def updateBuyerProfile():
     if not newPassword:
         newPassword = buyer_login[0]
     else:
-        newhashedPW = hash(newPassword)
+        newPassword = hash(newPassword)
 
     newBusinessName = request.form.get('newBusinessName')
     if not newBusinessName:
