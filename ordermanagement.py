@@ -18,25 +18,28 @@ def place_order():
 
     # Fetch product information based on the seller's email and listing ID
     cur.execute("""
-        SELECT Product_Title, Product_Name, Product_Description, Category, Product_Price, Quantity
+        SELECT Seller_Email, Product_Title, Product_Name, Product_Description, Category, Product_Price, Quantity
         FROM Product_Listings
         WHERE Seller_Email = ? AND Listing_ID = ?
     """, (seller_email, listing_id))
     product_data = cur.fetchone()
+
+    cur.execute(
+        'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+        (product_data[0],))
+    seller_rating = cur.fetchone()
 
     # If the product is not found, return an error message
     if not product_data:
         conn.close()
         return "Product not found."
 
-    product_title, product_name, product_description, product_category, unit_price, available_qty = product_data
+    seller_email, product_title, product_name, product_description, product_category, unit_price, available_qty = product_data
 
     # Check if the requested quantity is available
     if order_quantity > available_qty:
-        conn.close()
-        return "Requested quantity exceeds available stock."
+        return render_template('productpage.html', email=buyer_email, product=product_data, listing_id = listing_id, seller_rating=seller_rating, overQty=True)
 
-   
 
     # Clean the unit_price by removing the dollar sign and converting it to a float
     unit_price = int(unit_price.replace('$', '').strip())
@@ -164,4 +167,4 @@ def confirm_order():
     print(seller_rating)
     connection.close()
 
-    return render_template("productcatalogue.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating, orderSubmitted=True)
+    return render_template("orderconfirmation.html", email=buyer_email, product=product, listing_id=listing_id, seller_rating=seller_rating, orderSubmitted=True)

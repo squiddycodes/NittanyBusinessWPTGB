@@ -91,7 +91,7 @@
         <form action="/confirm_order" method="POST">
             <input type="hidden" name="buyer_email" value="{{ buyer_email }}">
             <input type="hidden" name="seller_email" value="{{ seller_email }}">
-            <input type="hidden" name="listing_id" value="{{ listing_id }}">
+            <input type="hidden" id="listing_id" name="listing_id" value="{{ listing_id }}">
             <input type="hidden" name="quantity" value="{{ quantity }}">
             <input type="hidden" name="payment" value="{{ payment }}">
             <button type="submit" class="btn btn-success">Confirm Order</button>
@@ -103,6 +103,77 @@
         </form>
     </div>
 </div>
+
+<!-- Modals -->
+<div class="modal fade" id="leaveRatingModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Leave a review!</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+          <form action="/MakeReview" method="POST" style="margin-top: 10px;">
+            <div class="modal-body">
+                <div class="mt-2">
+                    <label for="rateNumber" style="font-weight: bold">Choose a rating from 1 to 5:</label> <br />
+                </div>
+                <div class="btn-group mt-2" role="group" >
+                    <button type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(1)">1</button>
+                    <button type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(2)">2</button>
+                    <button type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(3)">3</button>
+                    <button type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(4)">4</button>
+                    <button type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(5)">5</button>
+                </div>
+                <h6 class="mt-2" id="currentRating">No rating selected yet.</h6>
+                <input type="hidden" name="rateNumber" id="rateNumber" value="">
+
+                <div class="mt-5">
+                    <label for="reviewInput" style="font-weight: bold">How was your experience? (Max. 100 characters)</label> <br />
+                    <textarea id="reviewInput" name="reviewInput" maxlength="100" style="height: 200px; width: 450px" placeholder="Begin writing here..."></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="redirectCatalogue()">Dismiss</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+      </div>
+    </div>
+</div>
+<!-- End Modals -->
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<!-- Managing review rating display upon selecting a value from 1-5 -->
+<script>
+    $(document).ready(function(){
+      {% if orderSubmitted %}
+        $('#leaveRatingModal').modal('show');
+      {% endif %}
+    });
+</script>
+<script>
+// Get number value from buyer rating
+function selectRating(n) {
+    document.getElementById('currentRating').innerText = "You selected: " + n;
+    document.getElementById('rateNumber').value = n;
+}
+
+function redirectCatalogue(){
+    window.location.href = '{{ url_for("BrowseProducts.browse_products", currCategory="Root", email=request.form.get("email"), keyword="", keywordInput="") }}';
+
+}
+</script>
 
 </body>
 </html>
