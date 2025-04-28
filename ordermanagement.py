@@ -44,7 +44,7 @@ def place_order():
     # Clean the unit_price by removing the dollar sign and converting it to a float
     unit_price = int(unit_price.replace('$', '').strip())
 
-    # Calculate the payment (total cost) based on the quantity and unit price
+    # Calculate the payment (total cost) based on  quantity and unit price
     payment = unit_price * order_quantity
 
     connection = sql.connect('database.db')
