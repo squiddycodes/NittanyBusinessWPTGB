@@ -26,15 +26,16 @@ def place_order():
     """, (seller_email, listing_id))
     product_data = cur.fetchone()
 
-    cur.execute(
+    connection = sql.connect('database.db')
+    cursor = connection.cursor()
+
+    cursor.execute(
         'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
-        (product_data[0],))
-    seller_rating = cur.fetchone()
+        (seller_email,))
+    seller_rating = cursor.fetchone()
+    connection.close()
 
 
-
-    if not seller_rating or seller_rating[0] is None:
-        seller_rating = (0.0,)
 
     # If the product is not found, return an error message
     if not product_data:
@@ -46,6 +47,7 @@ def place_order():
     # Check if the requested quantity is available
     if order_quantity > available_qty:
         return render_template('productpage.html', email=buyer_email, product=product_data, listing_id = listing_id, seller_rating=seller_rating, overQty=True)
+        #return redirect(url_for('BrowseProducts.browse_product', listing_id=listing_id,email=buyer_email))
 
 
     # Clean the unit_price by removing the dollar sign and converting it to a float
@@ -61,7 +63,6 @@ def place_order():
         'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
         (seller_email,))
     seller_rating = cursor.fetchone()
-    print(seller_rating)
     connection.close()
 
     # Render the order confirmation page with the necessary details
@@ -88,7 +89,6 @@ def confirm_order():
     listing_id = request.form['listing_id']
     quantity_ordered = int(request.form['quantity'])
     payment = float(request.form['payment'])
-    print(buyer_email, seller_email, listing_id, quantity_ordered, payment)
     # Get the current date and time for the order
     order_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -180,9 +180,6 @@ def confirm_order():
         (product[0],))
     seller_rating = cursor.fetchone()
 
-    if not seller_rating or seller_rating[0] is None:
-        seller_rating = (0.0,)
-    print(seller_rating)
     connection.close()
 
     return render_template("orderconfirmation.html",
