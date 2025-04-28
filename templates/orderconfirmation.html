@@ -135,7 +135,7 @@
             </div>
 
             <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="redirectCatalogue()">Dismiss</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>
@@ -165,8 +165,13 @@
 <script>
 // Get number value from buyer rating
 function selectRating(n) {
-    document.getElementById('currentRating').innertext = "You selected: " + n;
+    document.getElementById('currentRating').innerText = "You selected: " + n;
     document.getElementById('rateNumber').value = n;
+}
+
+function redirectCatalogue(){
+    window.location.href = '{{ url_for("BrowseProducts.browse_products", currCategory="Root", email=request.form.get("email"), keyword="", keywordInput="") }}';
+
 }
 </script>
 
