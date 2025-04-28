@@ -24,7 +24,11 @@ NittanyBusiness enables businesses to buy products from other businesses. The cu
       - Fields include: Title, Name, Description, Category, Quantity, Price, and Status
       - Once submitted, the new product is viewable under the Seller's product list, and, if activated, viewable to Buyers.
 
--
+- Product Search:
+  - When Buyers are searching for products in the catalogue, they have the ability to search using keywords specific to an attribute of the product.
+  - Displayed info on the Product Catalogue: Seller Email, Product Name, Price, Listing ID, Quantity, and Category
+  - Each attribute (besides Category) can be searched for by choosing one attrbiute to search by, as well as what keyword to search with
+
 
 # Running the Code
 The "ready to run" code is in app.py - run app.py to generate the webpage, and then visit http://127.0.0.1:5000 on any web browser to use the application. Be sure to download app.py as well as the templates, and NittanyBusinessDataset_v3 folders along with the files inside them. All of these files & folders must be in the same directory for the code to run.
