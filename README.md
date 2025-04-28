@@ -50,3 +50,6 @@ NittanyBusiness enables businesses to buy products from other businesses, sell p
 
 # Running the Code
 The "ready to run" code is in app.py - run app.py to generate the webpage, and then visit http://127.0.0.1:5000 on any web browser to use the application. Be sure to download all py files as well as the templates, and NittanyBusinessDataset_v3 folders along with the files inside them. All of these files & folders must be in the same directory for the code to run. Database.db will be automatically generated when you run the code.
+
+# GitHub
+See our [GitHub page](https://github.com/squiddycodes/NittanyBusinessWPTGB) to see the changes we've made along the way!
