@@ -96,9 +96,10 @@
             <input type="hidden" name="payment" value="{{ payment }}">
             <button type="submit" class="btn btn-success">Confirm Order</button>
         </form>
- <form action="/BrowseProducts/{{ currCategory }}" method="POST" style="margin-top: 10px;">
+
+        <form action="/BrowseProducts" method="POST" style="margin-top: 10px;">
             <input type="hidden" name="email" value="{{ buyer_email }}">
-            <button type="submit" class="btn btn-primary">Return to Catalogue</button>
+            <button type="submit" class="btn btn-primary">Return to Products</button>
         </form>
     </div>
 </div>
@@ -125,17 +126,17 @@
                     <button type="button" style="margin-right:16px" class="btn btn-primary btn-blue" onclick="selectRating(5)">5</button>
                 </div>
                 <h6 class="mt-2" id="currentRating">No rating selected yet.</h6>
+                <input type="hidden" name="rateNumber" id="rateNumber" value="">
 
                 <div class="mt-5">
                     <label for="reviewInput" style="font-weight: bold">How was your experience? (Max. 100 characters)</label> <br />
-                    <textarea id="reviewInput" maxlength="100" style="height: 200px; width: 450px" placeholder="Begin writing here..."></textarea>
+                    <textarea id="reviewInput" name="reviewInput" maxlength="100" style="height: 200px; width: 450px" placeholder="Begin writing here..."></textarea>
                 </div>
             </div>
 
             <div class="modal-footer">
-                    {#  Make different ids for submit and dismiss buttons#}
-                    <button type="button" id="reviewComplete" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
-                    <button type="submit" id="reviewComplete" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Dismiss</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>
       </div>
@@ -162,9 +163,10 @@
     });
 </script>
 <script>
-// Simple function to show selected rating
+// Get number value from buyer rating
 function selectRating(n) {
-    document.getElementById('currentRating').innerText = "You selected: " + n;
+    document.getElementById('currentRating').innertext = "You selected: " + n;
+    document.getElementById('rateNumber').value = n;
 }
 </script>
 

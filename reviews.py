@@ -14,7 +14,7 @@ def reviews():
     print(f"Order ID (listing_id): {order_id}")
 
     connection = sql.connect('database.db')
-    connection.execute('INSERT INTO Reviews (Order_ID, Rate, Review_Desc) VALUES (?, ?, ?)', (order_id, review, rating))
+    connection.execute('INSERT INTO Reviews (Order_ID, Rate, Review_Desc) VALUES (?, ?, ?)', (order_id, rating, review))
     connection.commit()
 
     return render_template('productcatalogue.html')
