@@ -13,7 +13,7 @@ def loadProductsPage():
     connection = sql.connect('database.db')
     cursor = connection.cursor()
     cursor.execute(
-        'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+        'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
         'FROM Product_Listings AS P '
         'WHERE P.Status = 1 AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',("Root","Root"))#get all products in category or child
     products = cursor.fetchall()
@@ -23,7 +23,7 @@ def loadProductsPage():
     connection.close()
     # Fills table with products
 
-    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats, keywords = ("", "Product_Name", "Listing_ID", "Quantity"))
+    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats, keywords = ("", "Product Name", "Seller Email", "Listing ID", "Price", "Quantity"))
 
 @BrowseProducts_bp.route('/BuyersHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
@@ -83,35 +83,51 @@ def browse_products(currCategory):
         email = request.args.get('email')
         keyword = request.args.get('keyword')
         keywordInput = request.args.get('keywordInput')
-        validSpecifiers = ("", "Product_Name", "Listing_ID", "Quantity")
+        validSpecifiers = ("", "Product Name", "Seller Email", "Listing ID", "Price", "Quantity")
         connection = sql.connect('database.db')
         cursor = connection.cursor()
         products = ''
 
         if keyword == "":
             cursor.execute(
-                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
                 'FROM Product_Listings AS P '
                 'WHERE P.Status = 1 AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
                 (currCategory, currCategory))  # get all products in category or child
             products = cursor.fetchall()
-        elif keyword == "Product_Name":
+        elif keyword == "Product Name":
             cursor.execute(
-                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
                 'FROM Product_Listings AS P '
                 'WHERE P.Status = 1 AND P.Product_Title = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
                 (keywordInput, currCategory, currCategory))  # get all products in category or child
             products = cursor.fetchall()
-        elif keyword == "Listing_ID":
+        elif keyword == "Seller Email":
             cursor.execute(
-                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
+                'FROM Product_Listings AS P '
+                'WHERE P.Status = 1 AND P.Seller_Email = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
+                (keywordInput, currCategory, currCategory))  # get all products in category or child
+            products = cursor.fetchall()
+        elif keyword == "Listing ID":
+            cursor.execute(
+                'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
                 'FROM Product_Listings AS P '
                 'WHERE P.Status = 1 AND P.Listing_ID = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
                 (keywordInput, currCategory, currCategory))  # get all products in category or child
             products = cursor.fetchall()
+        elif keyword == "Price":
+            signedPrice = "$" + keywordInput
+            print(signedPrice)
+            cursor.execute(
+                'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
+                'FROM Product_Listings AS P '
+                'WHERE P.Status = 1 AND P.Product_Price = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
+                (signedPrice, currCategory, currCategory))  # get all products in category or child
+            products = cursor.fetchall()
         elif keyword == "Quantity":
             cursor.execute(
-                'SELECT P.Product_Title, P.Listing_ID, P.Category, P.Quantity '
+                'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
                 'FROM Product_Listings AS P '
                 'WHERE P.Status = 1 AND P.Quantity = ? AND (P.Category=? OR P.Category IN (SELECT C.category_name FROM Categories AS C WHERE C.parent_category=?))',
                 (keywordInput, currCategory, currCategory))  # get all products in category or child

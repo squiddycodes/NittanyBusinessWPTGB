@@ -179,7 +179,7 @@ def insertUsers():
         productName = row['Product_Name']
         productDesc = row['Product_Description']
         qty = row['Quantity']
-        productPrice = row['Product_Price']
+        productPrice = row['Product_Price'].strip()
         status = row['Status']
 
         cursor.execute('''INSERT OR IGNORE INTO Product_Listings (Seller_Email, Listing_ID, Category, Product_Title, Product_Name, Product_Description, Quantity, Product_Price, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (sellerEmail, listingID, category, producttitle, productName, productDesc, qty, productPrice, status))
