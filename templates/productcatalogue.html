@@ -72,7 +72,8 @@
   <thead>
     <tr>
       <th scope="col">Product Name</th>
-      <th scope="col">Seller</th>
+      <th scope="col">Seller Email</th>
+      <th scope="col">Seller Rating</th>
       <th scope="col">Listing ID</th>
       <th scope="col">Category</th>
       <th scope="col">Price</th>
@@ -80,7 +81,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for Product_Title, Seller_Email, Listing_ID, Category, Product_Price, Quantity in productfile %}
+    {% for Product_Title, Seller_Email, Listing_ID, Category, Product_Price, Quantity, Seller_Rating in productfile %}
     <tr>
       <td>
           <form id="goToProduct:{{ Listing_ID }}" method="POST" style="display:inline-block;">
@@ -95,6 +96,7 @@
 
       </td>
       <td>{{ Seller_Email }}</td>
+      <td>{{ Seller_Rating }}</td>
       <td>{{ Listing_ID }}</td>
       <td>{{ Category }}</td>
       <td>{{ Product_Price }}</td>

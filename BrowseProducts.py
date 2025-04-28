@@ -20,10 +20,21 @@ def loadProductsPage():
 
     cursor.execute('SELECT category_name FROM Categories WHERE parent_category="Root"')
     subCats = cleanCategories(cursor.fetchall())
+    finalProducts = []
+    for product in products:
+        cursor.execute(
+            'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+            (product[1],))
+        seller_rating = cursor.fetchone()
+        temp = product + (seller_rating[0],)
+        finalProducts.append(temp)
+
+
     connection.close()
     # Fills table with products
 
-    return render_template('productcatalogue.html', email=email, productfile=products, currCategory="Root", subcategories=subCats, keywords = ("", "Product Name", "Seller Email", "Listing ID", "Price", "Quantity"))
+    return render_template('productcatalogue.html', email=email, productfile=finalProducts, currCategory="Root",
+                           subcategories=subCats, keywords = ("", "Product Name", "Seller Email", "Listing ID", "Price", "Quantity"))
 
 @BrowseProducts_bp.route('/BuyersHomePage', methods=['POST', 'GET'])
 def returntoHomePage():
@@ -118,7 +129,6 @@ def browse_products(currCategory):
             products = cursor.fetchall()
         elif keyword == "Price":
             signedPrice = "$" + keywordInput
-            print(signedPrice)
             cursor.execute(
                 'SELECT P.Product_Title, P.Seller_Email, P.Listing_ID, P.Category, P.Product_Price, P.Quantity '
                 'FROM Product_Listings AS P '
@@ -135,8 +145,17 @@ def browse_products(currCategory):
 
         cursor.execute('SELECT category_name FROM Categories WHERE parent_category=?',(currCategory,))
         subCats = cleanCategories(cursor.fetchall())
+
+        finalProducts = []
+        for product in products:
+            cursor.execute(
+                'SELECT AVG(Rate) AS seller_rating FROM Reviews WHERE Order_ID IN (SELECT Order_ID From Orders WHERE Seller_Email = ?)',
+                (product[1],))
+            seller_rating = cursor.fetchone()
+            temp = product + (seller_rating[0],)
+            finalProducts.append(temp)
         connection.close()
-        return render_template('productcatalogue.html', email=email, productfile=products, currCategory=currCategory,
+        return render_template('productcatalogue.html', email=email, productfile=finalProducts, currCategory=currCategory,
                                subcategories=subCats, keywords = validSpecifiers)
 
 @BrowseProducts_bp.route("/BrowseProducts/Back/<string:currCategory>", methods=['GET', 'POST'])
